@@ -1,6 +1,6 @@
 # CAS-Canglong: Improved AI model for predicting global sea surface temperature
 
-<img src="https://imagecollection.oss-cn-beijing.aliyuncs.com/office/20241101214426.png" style="zoom: 25%;" />
+<img src="https://imagecollection.oss-cn-beijing.aliyuncs.com/office/20241101214426.png" style="zoom: 5%;" />
 
 ## Overview
 
