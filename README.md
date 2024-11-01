@@ -20,7 +20,9 @@ Please consider cite this ref:
 
 Model trained on 4 × A100 80G GPUs
 
-Model inference does not require a GPU
+Model inference does not require a GPU  
+
+We trained for about 7 days in the GPU environment described above; in a normal GPU environment, reasoning about Haiwen takes only a few seconds  
 
 * torch: 2.1.0+cu118
 * timm: 1.0.11
