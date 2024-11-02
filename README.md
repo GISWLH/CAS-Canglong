@@ -30,7 +30,7 @@ We trained for about 7 days in the GPU environment described above; in a normal 
 
 ## Infer
 
-Please see the  [Infer.ipynb](notebook\Infer.ipynb) notebook
+Please see the  [Infer.ipynb](notebook/Infer.ipynb) notebook
 
 ```
 import torch
@@ -72,7 +72,7 @@ plot.one_map_flat(sst_dataarray, ax, levels=levels, cmap="RdBu_r", mask_ocean=Fa
 
 ## Training
 
-Please see the [model.ipynb](notebook\model.ipynb) 
+Please see the [model.ipynb](notebook/model.ipynb) 
 
 A100 80GB GPU recommended
 
