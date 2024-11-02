@@ -4,7 +4,7 @@
 
 ## Overview
 
-[![DOI](https://zenodo.org/badge/DOI/10.6084/m9.figshare.24614958.svg)](doi.org/10.6084/m9.figshare.26779969)
+[![DOI](https://zenodo.org/badge/DOI/10.6084/m9.figshare.24614958.svg)](https://doi.org/10.6084/m9.figshare.26779969)
 
 ``CAS-Canglong`` is a sub-seasonal prediction model 
 
