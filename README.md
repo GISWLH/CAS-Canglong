@@ -24,6 +24,7 @@ Model inference does not require a GPU
 
 We trained for about 7 days in the GPU environment described above; in a normal GPU environment, reasoning about Haiwen takes only a few seconds  
 
+* python: 3.8  
 * torch: 2.1.0+cu118
 * timm: 1.0.11
 * numpy: 1.24.4
