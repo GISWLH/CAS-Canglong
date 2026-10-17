@@ -1,3 +1,7 @@
+<!-- readme-visual-refresh:banner -->
+![CAS-Canglong — hand-drawn project banner](assets/readme/banner.svg)
+<!-- /readme-visual-refresh:banner -->
+
 # CAS-Canglong: Improved AI model for predicting global sea surface temperature
 
 ![](https://imagecollection.oss-cn-beijing.aliyuncs.com/office/logo1.png)
@@ -84,3 +88,7 @@ CAS-canglong releases predicted global SSTs on its website
 http://112.126.70.230/ 
 
 ![](https://imagecollection.oss-cn-beijing.aliyuncs.com/office/20241029132454.png)
+
+<!-- readme-visual-refresh:artwork-source -->
+[Editable banner artwork · Excalidraw](assets/readme/banner.excalidraw)
+<!-- /readme-visual-refresh:artwork-source -->
