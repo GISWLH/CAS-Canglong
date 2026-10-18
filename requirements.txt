@@ -1,0 +1,11 @@
+# notebooks (paper model); trained with Python 3.8, torch 2.1.0+cu118, timm 1.0.11, numpy 1.24.4
+torch>=2.1
+timm>=1.0
+numpy
+# scripts/plot_latest_forecast.py
+huggingface_hub
+xarray
+netCDF4
+pandas
+matplotlib
+cartopy

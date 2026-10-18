@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use CAS-Canglong, please cite the Advanced Science article."
+title: "CAS-Canglong: AI prediction of global sea surface temperature"
+type: software
+authors:
+  - family-names: Wang
+    given-names: Longhao
+    alias: GISWLH
+repository-code: "https://github.com/GISWLH/CAS-Canglong"
+url: "https://canglong.earth"
+license: MIT
+keywords:
+  - sea surface temperature
+  - ENSO
+  - sub-seasonal to seasonal prediction
+  - deep learning
+  - transformer
+preferred-citation:
+  type: article
+  title: "Improved Skills for Predicting Sub-Seasonal to Seasonal Global Sea Surface Temperature"
+  authors:
+    - family-names: Wang
+      given-names: Longhao
+    - family-names: Zhang
+      given-names: Xuanze
+    - family-names: Leung
+      given-names: L. Ruby
+    - family-names: Chiew
+      given-names: Francis H. S.
+    - family-names: AghaKouchak
+      given-names: Amir
+    - family-names: Ying
+      given-names: Kairan
+    - family-names: Zhang
+      given-names: Yongqiang
+  journal: "Advanced Science"
+  year: 2026
+  start: "e78271"
+  doi: "10.1002/advs.78271"

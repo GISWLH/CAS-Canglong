@@ -1,0 +1,5 @@
+xarray>=2024.1
+netCDF4
+numpy
+pandas
+plotly>=5.20

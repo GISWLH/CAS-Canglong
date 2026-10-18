@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+# model weights and large data (figshare: https://doi.org/10.6084/m9.figshare.26779969)
+*.tar
+*.pt
+*.pth
+*.nc
+# built Hugging Face Space assets (uploaded to the Space, not committed)
+hf_space/build/
