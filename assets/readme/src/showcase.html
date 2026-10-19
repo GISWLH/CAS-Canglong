@@ -1,0 +1,71 @@
+<!doctype html>
+<!-- canglong.earth showcase for the README. Next to this file put sst.png, home.png and viewer.png (screenshots of
+     /sst/, / and /viewer.html at a 1440x900 window, device scale 2) and the site's favicon.svg, then screenshot this
+     page at 1210x640, device scale 2, transparent background, and save it as ../canglong_earth.webp. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Inter; src: url("fonts/Inter.ttf"); font-weight: 100 900; }
+  @font-face { font-family: Plex; src: url("fonts/PlexMono-Medium.ttf"); }
+  html, body { margin: 0; background: transparent; }
+  .stage {
+    position: relative; width: 1210px; height: 640px; border-radius: 24px; overflow: hidden; box-sizing: border-box;
+    border: 1px solid #1b2a25;
+    background:
+      radial-gradient(900px 420px at 12% -10%, rgba(140, 214, 170, .16), transparent 60%),
+      radial-gradient(700px 380px at 105% 110%, rgba(255, 123, 84, .07), transparent 60%),
+      #071110;
+    font-family: Inter, sans-serif; color: #eaf2ec;
+  }
+  .grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(205, 235, 181, .07) 1px, transparent 1px);
+          background-size: 22px 22px; mask-image: linear-gradient(180deg, #000 0%, transparent 70%); }
+  .top { position: absolute; left: 40px; right: 40px; top: 26px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 600; letter-spacing: -.01em; }
+  .brand span { font-weight: 400; color: #a9b8b1; }
+  .brand svg { width: 28px; height: 28px; }
+  .tag { font-family: Plex, monospace; font-size: 11px; letter-spacing: .16em; color: #8fa59c; text-transform: uppercase; }
+  .tag b { color: #cdebb5; font-weight: inherit; }
+  .win { position: absolute; border-radius: 12px; overflow: hidden; background: #0c1513;
+         border: 1px solid rgba(205, 235, 181, .13); box-shadow: 0 28px 60px rgba(0, 0, 0, .5), 0 2px 0 rgba(255,255,255,.02) inset; }
+  .bar { height: 30px; display: flex; align-items: center; padding: 0 12px; gap: 6px; background: #0f1b18;
+         border-bottom: 1px solid rgba(205, 235, 181, .08); position: relative; }
+  .bar i { width: 9px; height: 9px; border-radius: 50%; background: #23332e; display: block; }
+  .url { position: absolute; left: 50%; transform: translateX(-50%); font-family: Plex, monospace; font-size: 11px;
+         color: #8fa59c; background: #142420; padding: 4px 14px; border-radius: 7px; letter-spacing: .02em; white-space: nowrap; }
+  .url b { color: #cdebb5; font-weight: inherit; }
+  .win img { display: block; width: 100%; }
+  .small .bar { height: 26px; }
+  .small .url { font-size: 10px; padding: 3px 12px; }
+  .label { position: absolute; font-family: Plex, monospace; font-size: 10.5px; letter-spacing: .14em; color: #6f817a; text-transform: uppercase; }
+  .label b { color: #cdebb5; font-weight: inherit; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid"></div>
+  <div class="top">
+    <div class="brand">
+      <img src="favicon.svg" style="width:30px;height:30px;display:block">
+      canglong<span>earth</span>
+    </div>
+    <div class="tag"><b>●</b>&nbsp; live forecast portal &nbsp;·&nbsp; ocean &amp; enso &nbsp;·&nbsp; atmosphere</div>
+  </div>
+
+  <div class="win" style="left:40px; top:84px; width:760px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">canglong.earth<b>/sst/</b></div></div>
+    <img src="sst.png">
+  </div>
+  <div class="win small" style="left:824px; top:84px; width:346px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">canglong.earth</div></div>
+    <img src="home.png">
+  </div>
+  <div class="win small" style="left:824px; top:346px; width:346px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">canglong.earth<b>/viewer.html</b></div></div>
+    <img src="viewer.png">
+  </div>
+  <div class="label" style="left:42px; top:604px;"><b>01</b>Ocean &amp; ENSO · 16 monthly SST maps · Niño 3.4 vs IRI plume</div>
+  <div class="label" style="left:826px; top:604px;"><b>02</b>Atmosphere · 36 variables · weeks 1–6</div>
+</div>
+</body>
+</html>

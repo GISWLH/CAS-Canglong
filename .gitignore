@@ -9,3 +9,5 @@ __pycache__/
 *.nc
 # built Hugging Face Space assets (uploaded to the Space, not committed)
 hf_space/build/
+# OFL fonts for the README artwork generator (download links in assets/readme/src/typeset.py)
+assets/readme/src/fonts/

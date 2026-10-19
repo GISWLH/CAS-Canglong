@@ -1,12 +1,11 @@
 <!-- readme-visual-refresh:banner -->
-![CAS-Canglong — hand-drawn project banner](assets/readme/banner.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/banner_dark.svg">
+  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong（中科苍龙）：全球海表温度与 ENSO 的 AI 预报，从 1 个月到一年以上。横幅以苍龙七宿的真实星位绘出苍龙。">
+</picture>
 <!-- /readme-visual-refresh:banner -->
 
 <div align="center">
-
-# 🐉 CAS-Canglong（苍龙）
-
-**全球海表温度与 ENSO 的 AI 预报：从 1 个月到一年以上**
 
 [![Paper](https://img.shields.io/badge/Advanced%20Science-2026-1D4ED8.svg)](https://doi.org/10.1002/advs.78271)
 [![arXiv](https://img.shields.io/badge/arXiv-2409.05369-B31B1B.svg)](https://arxiv.org/abs/2409.05369)
@@ -41,12 +40,21 @@ CAS-Canglong 是一个三维地球特定 Transformer，从 ERA5 中学习海洋�
 
 ## 🌊 最新预报
 
-![CAS-Canglong 预报：海温距平图与 Niño 3.4 展望](assets/readme/latest_forecast.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 全球海温距平展望：2026 年 10 月，2027 年 1、4、7、10 月与 2028 年 1 月六幅 Robinson 投影图，并标注各月 Niño 3.4 值">
+</picture>
 
 以截至 **2026 年 9 月**的 ERA5 月平均场为初值，预报 2026 年 10 月 Niño 3.4 距平为 **+3.75 °C**，2027 年 1 月回落至
-+2.9 °C，并持续高于 +0.5 °C 至 2027 年 10 月。这是一次确定性科研预报，不是官方预报；解读方法和局限见
-[Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)。无需 GPU 即可重新绘制：
-`python scripts/plot_latest_forecast.py`。
++2.9 °C，并持续高于 +0.5 °C 至 2027 年 10 月。上图每隔 3 个月展示一次 16 个月预报：赤道东太平洋暖舌从第 1 个月到
+第 16 个月逐渐减弱，而大部分海域始终高于 1959–2016 年气候态。图中为 1° 原生输出，平滑仅用于显示；
+[canglong.earth](https://canglong.earth/sst/) 可在交互式地球仪上查看每个月。
+
+![CAS-Canglong 预报：海温距平图与 Niño 3.4 展望](assets/readme/latest_forecast.png)
+
+这是一次确定性科研预报，不是官方预报；解读方法和局限见
+[Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)。无需 GPU 即可重新绘制两幅图：
+`python scripts/plot_global_outlook.py` 与 `python scripts/plot_latest_forecast.py`。
 
 ## ✨ 亮点
 
@@ -124,7 +132,7 @@ u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")  # canglong.eart
 | [`notebook/`](notebook) | 模型定义与训练（[model.ipynb](notebook/model.ipynb)）、推理（[Infer.ipynb](notebook/Infer.ipynb)）、论文图（[Figure.ipynb](notebook/Figure.ipynb)）、实验（[cang.ipynb](notebook/cang.ipynb)） |
 | [`utils/`](utils) | 三维 patch 嵌入、恢复、地球特定位置编码、移位窗口掩膜、填充与裁剪；绘图工具 |
 | [`data/`](data) | 论文图对应的评估表（各模式分区、分时效技巧，IRI 预测羽对比）及两个示例 GeoTIFF |
-| [`scripts/`](scripts) | `plot_latest_forecast.py`：下载并绘制最新预报 |
+| [`scripts/`](scripts) | `plot_global_outlook.py` 与 `plot_latest_forecast.py`：下载并绘制最新预报 |
 | [`hf_space/`](hf_space) | Hugging Face Space 源码：应用、资产构建与部署脚本 |
 
 ## 📚 论文
@@ -166,6 +174,25 @@ u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")  # canglong.eart
 代码：[MIT](LICENSE)。Pangu 风格模块参考 [WeatherLearn](https://github.com/lizhuoq/WeatherLearn)（MIT）。
 ERA5 © ECMWF / Copernicus 气候变化服务。预报为科研产品，不是官方预警。
 
+## 🌍 在 canglong.earth 查看实时预报
+
+<a href="https://canglong.earth"><img src="assets/readme/canglong_earth.webp" width="100%" alt="canglong.earth：CAS-Canglong 海洋、ENSO 与大气预报的交互式地球仪"></a>
+
+[**canglong.earth**](https://canglong.earth) 是 CAS-Canglong 的可视化服务。每次运行的结果都以可旋转、缩放的三维地球仪
+发布，可逐月或逐周播放。
+
+| 页面 | 内容 | 链接 |
+|---|---|---|
+| **海洋与 ENSO** | 16 个预报月的 SST（721 × 1440 网格）、10 m 风矢量，以及 Niño 3.4 与 IRI 预测羽对比 | [canglong.earth/sst](https://canglong.earth/sst/) |
+| **大气** | 36 个地面与高空变量的周平均，第 1–6 周 | [canglong.earth/viewer.html](https://canglong.earth/viewer.html) |
+| **门户首页** | 两套预报模型与系统概览 | [canglong.earth](https://canglong.earth) |
+
+<div align="center">
+
+**[打开 canglong.earth →](https://canglong.earth)**
+
+</div>
+
 <!-- readme-visual-refresh:artwork-source -->
-[Editable banner artwork · Excalidraw](assets/readme/banner.excalidraw)
+<sub>[可编辑的图形源文件 · 标志、横幅与门户展示图](assets/readme/src/)</sub>
 <!-- /readme-visual-refresh:artwork-source -->
