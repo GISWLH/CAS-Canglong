@@ -24,7 +24,7 @@
 CAS-Canglong is a 3-D Earth-specific transformer that learns the coupled ocean–atmosphere system from ERA5 and predicts
 monthly global sea-surface temperature (SST). In the *Advanced Science* paper it improves one-to-three-month SST skill by
 **55.6 ± 14.1 % to 63.4 ± 15.5 %** over physics-based seasonal models in six ocean regions that dominate S2S variability
-over land. The same model family now runs every month: a **16-month SST and ENSO outlook** and a **six-week atmospheric
+over land. The CAS-Canglong project now provides a **16-month SST and ENSO outlook** and a **six-week atmospheric
 outlook**, published on [canglong.earth](https://canglong.earth) and the
 [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong).
 
@@ -63,18 +63,24 @@ explains how to read it and its limits. Regenerate the figure without a GPU: `py
 - **Operational.** Monthly 16-month SST and ENSO outlooks plus weekly atmospheric outlooks, with every product published
   as data rather than only as images.
 
-## 🧭 Model family
+## 🧭 Forecast products
 
-| Model | Predicts | Grid | Where to get it |
+CAS-Canglong provides global ocean and atmospheric outlooks for subseasonal-to-seasonal applications.
+
+| Product | Forecast range | Grid | Access |
 |---|---|---|---|
-| **CAS-Canglong** (paper) | monthly SST, 1–3 months ahead | 0.25° | this repo (`notebook/`), weights on [figshare](https://doi.org/10.6084/m9.figshare.26779969), [WeatherAI port](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
-| **CAS-Canglong operational SST** | monthly SST and Niño 3.4, 1–16 months ahead | 1° + learned 0.25° refiner | forecasts on [canglong.earth](https://canglong.earth/sst/) and the [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong); weights not released |
-| **CAS-Canglong atmosphere V3.5** | weekly means of 36 variables, weeks 1–6 | 0.25°, published at 1° | forecasts on [canglong.earth](https://canglong.earth/viewer.html), [WeatherPre](https://github.com/GISWLH/WeatherPre) route `canglong`; weights not released |
+| **SST and ENSO outlook** | monthly SST and Niño 3.4, 1–16 months ahead | 1° + learned 0.25° refiner | [canglong.earth](https://canglong.earth/sst/) and the [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) |
+| **Atmospheric outlook** | weekly means of 36 variables, weeks 1–6 | 0.25°, published at 1° | [canglong.earth](https://canglong.earth/viewer.html) and [WeatherPre](https://github.com/GISWLH/WeatherPre), route `canglong` |
 
-The operational SST model is a one-pass Swin transformer that predicts all 16 months in a single forward pass. Its
-checkpoint selection used agreement with the historical NWP multi-model mean and the current IRI ENSO plume, so its live
-runs are not an independent skill test; published skill refers to the paper model. The atmospheric run is not
-drift-corrected (high latitudes warm with lead time); read its fields as model output, not as calibrated anomalies.
+For reproducible research, this repository provides the [paper's code](notebook/) for monthly SST prediction at 0.25°
+with 1–3-month lead times, together with public weights on [figshare](https://doi.org/10.6084/m9.figshare.26779969) and a
+[WeatherAI implementation](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md). Weights for the live
+forecast products have not been released.
+
+The 16-month SST outlook is generated in a single forward pass. Checkpoint selection used agreement with the historical
+NWP multi-model mean and the current IRI ENSO plume, so live runs are not an independent skill test; published skill
+refers to the configuration evaluated in the paper. Atmospheric forecasts are not drift-corrected (high latitudes warm
+with lead time); read these fields as model output, not as calibrated anomalies.
 
 ## 🚀 Quick start
 

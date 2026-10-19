@@ -22,7 +22,7 @@
 
 CAS-Canglong 是一个三维地球特定 Transformer，从 ERA5 中学习海洋—大气耦合系统，预测全球逐月海表温度（SST）。
 *Advanced Science* 论文显示，在对陆地次季节—季节（S2S）变率影响最大的六个海区，它将 1–3 个月 SST 预测技巧比基于物理的
-季节预测模式提高 **55.6 ± 14.1 % 至 63.4 ± 15.5 %**。同一模型家族现已按月业务运行：**16 个月海温与 ENSO 展望**和
+季节预测模式提高 **55.6 ± 14.1 % 至 63.4 ± 15.5 %**。CAS-Canglong 现已提供**16 个月海温与 ENSO 展望**和
 **6 周大气展望**，发布在 [canglong.earth](https://canglong.earth) 和
 [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)。
 
@@ -57,16 +57,21 @@ CAS-Canglong 是一个三维地球特定 Transformer，从 ERA5 中学习海洋�
 - **公开可核查**：权重和数据在 figshare，notebook 代码在本仓库，WeatherAI 的独立 PyTorch 复现读取公开权重并给出相同结果。
 - **业务运行**：每月 16 个月海温与 ENSO 展望，加上逐周大气展望；所有产品都以数据而非仅图片形式发布。
 
-## 🧭 模型家族
+## 🧭 预报产品
 
-| 模型 | 预报内容 | 网格 | 获取方式 |
+CAS-Canglong 面向次季节—季节预测应用，提供全球海洋与大气展望。
+
+| 产品 | 预报范围 | 网格 | 获取方式 |
 |---|---|---|---|
-| **CAS-Canglong**（论文） | 逐月 SST，提前 1–3 个月 | 0.25° | 本仓库 `notebook/`，权重见 [figshare](https://doi.org/10.6084/m9.figshare.26779969)，[WeatherAI 复现](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
-| **CAS-Canglong 业务海温模型** | 逐月 SST 与 Niño 3.4，提前 1–16 个月 | 1° + 学习型 0.25° 细化 | 预报见 [canglong.earth](https://canglong.earth/sst/) 与 [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)；权重未公开 |
-| **CAS-Canglong 大气 V3.5** | 36 个变量的周平均，第 1–6 周 | 0.25°，以 1° 发布 | 预报见 [canglong.earth](https://canglong.earth/viewer.html)，[WeatherPre](https://github.com/GISWLH/WeatherPre) 路由 `canglong`；权重未公开 |
+| **海温与 ENSO 展望** | 逐月 SST 与 Niño 3.4，提前 1–16 个月 | 1° + 学习型 0.25° 细化 | [canglong.earth](https://canglong.earth/sst/) 与 [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) |
+| **大气展望** | 36 个变量的周平均，第 1–6 周 | 0.25°，以 1° 发布 | [canglong.earth](https://canglong.earth/viewer.html) 与 [WeatherPre](https://github.com/GISWLH/WeatherPre)，路由 `canglong` |
 
-业务海温模型是单次前向即输出全部 16 个月的 Swin Transformer。其检查点筛选参考了历史 NWP 多模式平均和当期 IRI ENSO
-预测羽，因此实时预报不是独立的技巧检验；论文中的技巧指论文模型。大气预报未做漂移订正（高纬度随预报时效偏暖），
+为支持科研复现，本仓库提供论文中提前 1–3 个月、0.25° 逐月 SST 预测的[代码](notebook/)，公开权重见
+[figshare](https://doi.org/10.6084/m9.figshare.26779969)，也可使用
+[WeatherAI 实现](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md)。实时预报产品的权重尚未公开。
+
+16 个月海温展望通过单次前向计算生成。检查点筛选参考了历史 NWP 多模式平均和当期 IRI ENSO 预测羽，因此实时预报
+不是独立的技巧检验；已发表的预测技巧对应论文中评估的配置。大气预报未做漂移订正（高纬度随预报时效偏暖），
 应将其视为模式输出而非订正后的距平。
 
 ## 🚀 快速开始
