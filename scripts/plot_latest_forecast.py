@@ -5,7 +5,7 @@
     python scripts/plot_latest_forecast.py --lead 4 --out jan.png
 
 Left: SST anomaly for one forecast month (native 1° grid, vs ERA5 1959-2016). Right: monthly Niño 3.4 from
-CAS-Canglong with the IRI ENSO plume means published at the same time.
+CAS-Canglong with the IRI ENSO plume means published at the same time; every forecast starts from the latest observation.
 """
 from __future__ import annotations
 
@@ -86,15 +86,18 @@ def main() -> None:
 
     bx = fig.add_axes([0.63, 0.17, 0.33, 0.64])
     bx.set_facecolor(SURFACE)
+    obs = [(season_center(o["season"]), o["data"]) for o in iri["observed"]]
+    t0, v0 = obs[-1]                                # every forecast leaves from the latest observation
     for m in iri["models"]:
-        bx.plot([season_center(s) for s in m["seasons"]], m["data"], color="#d9d8d2", lw=0.8, zorder=1)
+        bx.plot([t0] + [season_center(s) for s in m["seasons"]], [v0] + m["data"], color="#d9d8d2", lw=0.8, zorder=1)
     for avg, color in (("dynamical", DYN), ("statistical", STAT)):
         rec = next(x for x in iri["averages"] if x["model"] == avg)
-        bx.plot([season_center(s) for s in rec["seasons"]], rec["data"], color=color, lw=1.8, zorder=3,
+        bx.plot([t0] + [season_center(s) for s in rec["seasons"]], [v0] + rec["data"], color=color, lw=1.8, zorder=3,
                 label=f"IRI {avg} mean (3-month)")
-    bx.plot(months, nino, color=CAS, lw=2.2, marker="o", ms=4, mec=SURFACE, mew=1, zorder=4, label="CAS-Canglong (monthly)")
-    obs = [(season_center(o["season"]), o["data"]) for o in iri["observed"]]
-    bx.scatter([o[0] for o in obs], [o[1] for o in obs], marker="D", s=22, color=INK, zorder=5, label="observed (IRI)")
+    bx.plot([t0, *months], [v0, *nino], color=CAS, lw=2.2, marker="o", ms=4, mec=SURFACE, mew=1,
+            markevery=range(1, len(months) + 1), zorder=4, label="CAS-Canglong (monthly)")
+    bx.plot([o[0] for o in obs], [o[1] for o in obs], color=INK, lw=1.2, marker="D", ms=5, zorder=5,
+            label="observed (IRI)")
     for y in (0.5, -0.5):
         bx.axhline(y, color=MUTED, lw=0.8, ls=":", zorder=0)
     bx.axhline(0, color="#c3c2b7", lw=0.8, zorder=0)
