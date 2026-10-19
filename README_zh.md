@@ -1,7 +1,7 @@
 <!-- readme-visual-refresh:banner -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/banner_dark.svg">
-  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong（中科苍龙）：全球海表温度与 ENSO 的 AI 预报，从 1 个月到一年以上。横幅以苍龙七宿的真实星位绘出苍龙。">
+  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong（中科苍龙）：全球海表温度与 ENSO 的 AI 预报，从 1 个月到一年以上。白板手绘：海洋与大气数据输入三维地球 Transformer，输出海温与 ENSO 展望。">
 </picture>
 <!-- /readme-visual-refresh:banner -->
 
@@ -42,12 +42,13 @@ CAS-Canglong 是一个三维地球特定 Transformer，从 ERA5 中学习海洋�
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
-  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 全球海温距平展望：2026 年 10 月，2027 年 1、4、7、10 月与 2028 年 1 月六幅 Robinson 投影图，并标注各月 Niño 3.4 值">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 全球海温展望：2026 年 10 月，2027 年 1、4、7、10 月与 2028 年 1 月六幅 Robinson 投影图，标出 28 °C 等温线及各月 Niño 3.4 指数">
 </picture>
 
 以截至 **2026 年 9 月**的 ERA5 月平均场为初值，预报 2026 年 10 月 Niño 3.4 距平为 **+3.75 °C**，2027 年 1 月回落至
-+2.9 °C，并持续高于 +0.5 °C 至 2027 年 10 月。上图每隔 3 个月展示一次 16 个月预报：赤道东太平洋暖舌从第 1 个月到
-第 16 个月逐渐减弱，而大部分海域始终高于 1959–2016 年气候态。图中为 1° 原生输出，平滑仅用于显示；
++2.9 °C，并持续高于 +0.5 °C 至 2027 年 10 月。上图每隔 3 个月展示一次 16 个月预报，粗线为 28 °C 等温线，勾勒出暖池范围：
+在赤道上，28 °C 以上海水在 2026 年 10 月至 2027 年 4 月东伸至约 82°W、接近南美沿岸，到 2028 年 1 月退回到日界线附近
+（约 172°W）。图中为 1° 原生输出，平滑仅用于显示；
 [canglong.earth](https://canglong.earth/sst/) 可在交互式地球仪上查看每个月。
 
 ![CAS-Canglong 预报：海温距平图与 Niño 3.4 展望](assets/readme/latest_forecast.png)
@@ -194,5 +195,5 @@ ERA5 © ECMWF / Copernicus 气候变化服务。预报为科研产品，不是�
 </div>
 
 <!-- readme-visual-refresh:artwork-source -->
-<sub>[可编辑的图形源文件 · 标志、横幅与门户展示图](assets/readme/src/)</sub>
+<sub>[可编辑的图形源文件 · 标志、白板风格横幅与门户展示图](assets/readme/src/)</sub>
 <!-- /readme-visual-refresh:artwork-source -->

@@ -1,7 +1,7 @@
 <!-- readme-visual-refresh:banner -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/banner_dark.svg">
-  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong (中科苍龙): AI forecasts of global sea-surface temperature and ENSO, from one month to more than a year ahead. The banner draws the Azure Dragon through the stars of its seven lunar mansions.">
+  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong (中科苍龙): AI forecasts of global sea-surface temperature and ENSO, from one month to more than a year ahead. Whiteboard sketch: ocean and atmosphere data go into a 3-D Earth transformer, which draws the SST and ENSO outlook.">
 </picture>
 <!-- /readme-visual-refresh:banner -->
 
@@ -45,14 +45,15 @@ outlook**, published on [canglong.earth](https://canglong.earth) and the
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
-  <img src="assets/readme/global_outlook.png" width="100%" alt="Global SST anomaly outlook from CAS-Canglong: six Robinson maps for October 2026, January, April, July and October 2027, and January 2028, with the Niño 3.4 value of each month">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="Global SST outlook from CAS-Canglong: six Robinson maps for October 2026, January, April, July and October 2027, and January 2028, with the 28 °C isotherm and the Niño 3.4 index of each month">
 </picture>
 
 Initialised with ERA5 monthly means through **September 2026**, the run predicts a Niño 3.4 anomaly of **+3.75 °C** in
 October 2026. The anomaly decays to +2.9 °C in January 2027 and stays above +0.5 °C until October 2027. The maps step
-through the 16-month run three months at a time: the warm tongue in the eastern equatorial Pacific fades from lead 1 to
-lead 16, while most of the ocean stays warmer than the 1959–2016 climatology. Fields are the native 1° output, smoothed
-for display only; [canglong.earth](https://canglong.earth/sst/) shows every month on an interactive globe.
+through the 16-month run three months at a time, and the bold 28 °C isotherm outlines the warm pool: on the equator, water
+of 28 °C or more reaches about 82°W, close to South America, from October 2026 to April 2027, then retreats to about
+172°W, near the date line, by January 2028. Fields are the native 1° output, smoothed for display only;
+[canglong.earth](https://canglong.earth/sst/) shows every month on an interactive globe.
 
 ![CAS-Canglong forecast: SST anomaly map and Niño 3.4 outlook](assets/readme/latest_forecast.png)
 
@@ -205,5 +206,5 @@ as interactive 3-D globes that you can rotate, zoom and play through month by mo
 </div>
 
 <!-- readme-visual-refresh:artwork-source -->
-<sub>[Editable artwork source · logo, banner and portal showcase](assets/readme/src/)</sub>
+<sub>[Editable artwork source · logo, whiteboard banner and portal showcase](assets/readme/src/)</sub>
 <!-- /readme-visual-refresh:artwork-source -->
