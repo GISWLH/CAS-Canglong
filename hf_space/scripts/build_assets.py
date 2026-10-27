@@ -1,11 +1,13 @@
-"""Render the Hugging Face Space assets from one CAS-Canglong forecast run.
+"""Render the Hugging Face Space assets from one CAS-Canglong forecast release.
 
-    python hf_space/scripts/build_assets.py --sst canglong_sst_init202609.nc --iri iri_latest.json \
-        --manifest showcase_manifest.json --out hf_space/build
+    python hf_space/scripts/build_assets.py --products products/ --iri iri_latest.json \
+        --atmos canglong_atmos_start20261022.nc --out hf_space/build
 
-Writes `data/` (NetCDF, Nino3.4 CSV, provenance JSON) and `assets/maps/*.png` (Robinson maps) into --out.
-The six-week atmospheric run is fetched from canglong.earth through WeatherPre (`wp.forecast("canglong", ...)`)
-unless --atmos points to a saved copy.
+`--products` is the folder written by the release's product step: the display NetCDF
+(`canglong_sst_round5_init*.nc`), `nino34.csv`, `hindcast_nino34*.csv`, `round6_heldout_metrics.csv` and
+`products_manifest.json`. Writes `data/` (those files, the IRI plume, the six-week atmosphere and `run.json`) and
+`assets/maps/*.png` (Robinson maps) into --out. Without --atmos the six-week atmospheric run is fetched from
+canglong.earth through WeatherPre (`wp.forecast("canglong", ...)`).
 """
 from __future__ import annotations
 
@@ -30,6 +32,10 @@ DIVERGING = LinearSegmentedColormap.from_list(
     "blue_red", ["#0d366b", "#2a78d6", "#86b6ef", "#f0efec", "#f3a5a1", "#e34948", "#8c1c1c"])
 WARM = LinearSegmentedColormap.from_list("warm", ["#fdf3e7", "#f7c99b", "#eb6834", "#b8421b", "#5e1e0d"])
 BLUE = LinearSegmentedColormap.from_list("blue", ["#f4f8fd", "#cde2fb", "#86b6ef", "#2a78d6", "#184f95", "#0d366b"])
+PROB = LinearSegmentedColormap.from_list("prob", ["#f4f3ef", "#f7d9c4", "#f3a5a1", "#e34948", "#a32424", "#5e1212"])
+SPREAD = LinearSegmentedColormap.from_list("spread", ["#f4f3ef", "#e4dcf3", "#b9a3e3", "#8a63d2", "#5a35a6", "#2f1a63"])
+PRODUCTS = ["nino34.csv", "hindcast_nino34.csv", "hindcast_nino34_skill.csv", "round6_heldout_metrics.csv",
+            "products_manifest.json"]
 plt.rcParams.update({"font.family": ["Arial", "Helvetica", "DejaVu Sans"], "font.size": 10,
                      "text.color": INK, "axes.labelcolor": INK2, "xtick.color": MUTED, "ytick.color": MUTED})
 
@@ -68,25 +74,36 @@ def robinson_map(field, lat, lon, path: Path, *, cmap, levels, extend, cbar_labe
 
 def build_sst(ds: xr.Dataset, out: Path, init: str) -> list[dict]:
     lat, lon = ds.lat.values, ds.lon.values
-    lat2, lon2 = ds.lat025.values, ds.lon025.values
-    foot = f"CAS-Canglong · input: ERA5 monthly means through {init} · research forecast, not an official product"
+    foot = (f"CAS-Canglong SST model, release 2026-10-25 · input: ERA5 monthly means through {init} · "
+            "research forecast, not an official product")
+    grid = " · native 1° model grid"
     ssta_levels = np.arange(-3.0, 3.01, 0.25)
     sst_levels = np.arange(-2.0, 32.01, 2.0)
-    frames = [("t00", f"{month_label(ds.obs_time.values[-1])} (observed, ERA5)", ds.observed_ssta.values,
-               ds.observed_sst_025.values - 273.15, "Observed ERA5 monthly mean — the last input month")]
+    obs_t = ds.obs_time.values[-1]
+    frames = [("t00", f"{month_label(obs_t)} (observed, ERA5)", ds.observed_ssta_9120.values[-1],
+               ds.observed_sst.values[-1] - 273.15, None, None, "Observed ERA5 monthly mean — the last input month")]
     for i, t in enumerate(ds.time.values):
-        frames.append((f"t{i + 1:02d}", f"{month_label(t)} (lead {i + 1})", ds.ssta.isel(time=i).values,
-                       ds.sst_025.isel(time=i).values - 273.15, f"Forecast for {month_label(t)}, {i + 1}-month lead"))
+        frames.append((f"t{i + 1:02d}", f"{month_label(t)} (lead {i + 1})", ds.ssta_9120.isel(time=i).values,
+                       ds.sst.isel(time=i).values - 273.15, ds.p_upper_quintile.isel(time=i).values,
+                       ds.sigma.isel(time=i).values, f"Forecast for {month_label(t)}, {i + 1}-month lead"))
     index = []
-    for key, label, ssta, sst, sub in frames:
+    for key, label, ssta, sst, pup, sigma, sub in frames:
         robinson_map(ssta, lat, lon, out / f"assets/maps/ssta_{key}.png", cmap=DIVERGING, levels=ssta_levels,
-                     extend="both", cbar_label="SST anomaly (°C) vs ERA5 1959–2016 monthly climatology",
-                     title=f"SST anomaly · {label}", subtitle=sub + " · native 1° model grid", footnote=foot)
-        sst = np.maximum(sst, -1.8)
-        robinson_map(sst, lat2, lon2, out / f"assets/maps/sst_{key}.png", cmap=WARM, levels=sst_levels, extend="both",
-                     cbar_label="Sea surface temperature (°C)", title=f"Sea surface temperature · {label}",
-                     subtitle=sub + " · 0.25°, coastal belt blended with ERA5 for display (as on canglong.earth)",
-                     footnote=foot + " · values below the −1.8 °C freezing point shown as −1.8 °C")
+                     extend="both", cbar_label="SST anomaly (°C) vs ERA5 1991–2020 monthly climatology",
+                     title=f"SST anomaly · {label}", subtitle=sub + grid, footnote=foot)
+        robinson_map(np.maximum(sst, -1.8), lat, lon, out / f"assets/maps/sst_{key}.png", cmap=WARM, levels=sst_levels,
+                     extend="both", cbar_label="Sea surface temperature (°C)", title=f"Sea surface temperature · {label}",
+                     subtitle=sub + grid, footnote=foot + " · values below the −1.8 °C freezing point shown as −1.8 °C")
+        if pup is not None:
+            robinson_map(pup * 100, lat, lon, out / f"assets/maps/pupper_{key}.png", cmap=PROB,
+                         levels=np.array([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]), extend="neither",
+                         cbar_label="Probability (%) of the warmest fifth of the 1959–2009 climate for this month",
+                         title=f"Chance of a top-quintile month · {label}",
+                         subtitle=sub + " · calibrated quintile probability (20 % = climatological odds)", footnote=foot)
+            robinson_map(sigma, lat, lon, out / f"assets/maps/sigma_{key}.png", cmap=SPREAD,
+                         levels=np.array([0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.25, 1.5, 2.0]), extend="max",
+                         cbar_label="Forecast standard deviation (°C)", title=f"Forecast uncertainty · {label}",
+                         subtitle=sub + " · marginal Gaussian spread per grid cell", footnote=foot)
         index.append({"key": key, "label": label})
         print("map", key, flush=True)
     return index
@@ -123,17 +140,18 @@ def build_atmos(u: xr.Dataset, out: Path) -> list[dict]:
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--sst", type=Path, required=True)
+    p.add_argument("--products", type=Path, required=True)
     p.add_argument("--iri", type=Path, required=True)
-    p.add_argument("--manifest", type=Path, required=True)
     p.add_argument("--atmos", type=Path)
     p.add_argument("--out", type=Path, default=Path("hf_space/build"))
     a = p.parse_args()
     data = a.out / "data"
     data.mkdir(parents=True, exist_ok=True)
-    ds = xr.open_dataset(a.sst)
+    sst_path = next(a.products.glob("canglong_sst_round5_init*.nc"))
+    ds = xr.open_dataset(sst_path)
     init = pd.Timestamp(ds.obs_time.values[-1]).strftime("%Y-%m")
-    shutil.copy2(a.sst, data / a.sst.name)
+    for f in [sst_path, *(a.products / n for n in PRODUCTS)]:
+        shutil.copy2(f, data / f.name)
     shutil.copy2(a.iri, data / "iri_plume.json")
 
     if a.atmos:
@@ -144,19 +162,16 @@ def main() -> None:
     atmos_name = f"canglong_atmos_start{pd.Timestamp(u.init_time.values):%Y%m%d}.nc"
     u.to_netcdf(data / atmos_name)
 
-    nino = pd.DataFrame({"valid_month": [pd.Timestamp(t).strftime("%Y-%m") for t in ds.time.values],
-                         "lead_month": np.arange(1, ds.sizes["time"] + 1),
-                         "nino34_degC": ds.nino34.values.round(3), "nino34_1deg_degC": ds.nino34_1deg.values.round(3)})
-    nino.to_csv(data / "nino34.csv", index=False)
-    run = json.loads(a.manifest.read_text())
-    meta = {"sst_file": a.sst.name, "atmos_file": atmos_name, "initialization": init,
+    man = json.loads((a.products / "products_manifest.json").read_text())
+    meta = {"model": "CAS-Canglong SST, release 2026-10-25 (Round 5 frozen model)",
+            "model_repo": "LonghaoWang/CAS-Canglong-SST", "hindcast_dataset": "LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12",
+            "sst_file": sst_path.name, "source_forecast_sha256": ds.attrs.get("source_sha256"), "atmos_file": atmos_name,
+            "initialization": init, "issue_month": ds.attrs.get("issue_month"),
             "atmos_start": pd.Timestamp(u.init_time.values).strftime("%Y-%m-%d"), "atmos_source": u.attrs.get("source"),
-            "atmos_release": u.attrs.get("release"), "run_time_utc": run.get("run_time_utc"),
-            "checkpoint_sha256": run.get("checkpoint_sha256"), "input_cache_sha256": run.get("input_cache_sha256"),
-            "check_vs_operational": run.get("check_vs_operational"),
+            "atmos_release": u.attrs.get("release"), "products_created_utc": man["created_utc"], "checks": man["checks"],
             "frames": build_sst(ds, a.out, init), "weeks": build_atmos(u, a.out)}
     (data / "run.json").write_text(json.dumps(meta, indent=2))
-    print(json.dumps({k: v for k, v in meta.items() if k not in ("frames", "weeks")}, indent=1))
+    print(json.dumps({k: v for k, v in meta.items() if k not in ("frames", "weeks", "checks")}, indent=1))
 
 
 if __name__ == "__main__":

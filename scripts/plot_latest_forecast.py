@@ -4,8 +4,9 @@
     python scripts/plot_latest_forecast.py                      # -> assets/readme/latest_forecast.png
     python scripts/plot_latest_forecast.py --lead 4 --out jan.png
 
-Left: SST anomaly for one forecast month (native 1° grid, vs ERA5 1959-2016). Right: monthly Niño 3.4 from
-CAS-Canglong with the IRI ENSO plume means published at the same time; every forecast starts from the latest observation.
+Left: SST anomaly for one forecast month (native 1° grid, vs ERA5 1991-2020). Right: monthly Niño 3.4 from
+CAS-Canglong (1991-2020 base, starting from its ERA5 initial month) with the IRI ENSO plume published at the same time;
+the IRI curves start from IRI's latest observation.
 """
 from __future__ import annotations
 
@@ -50,14 +51,15 @@ def season_center(season: str) -> pd.Timestamp:
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--lead", type=int, default=3, help="forecast month to map, 1..16 (default 3)")
+    p.add_argument("--lead", type=int, default=3, help="forecast month to map, 1..12 (default 3)")
     p.add_argument("--out", type=Path, default=Path("assets/readme/latest_forecast.png"))
     a = p.parse_args()
     run = json.loads(fetch("data/run.json").read_text())
     ds = xr.open_dataset(fetch(f"data/{run['sst_file']}"))
     iri = json.loads(fetch("data/iri_plume.json").read_text())
     months = pd.to_datetime(ds.time.values)
-    nino = ds.nino34.values.astype(float)
+    nino = ds.nino34_9120.values.astype(float)
+    t_init, v_init = pd.Timestamp(ds.obs_time.values[-1]), float(ds.nino34_obs_9120.values[-1])
     k = a.lead - 1
 
     fig = plt.figure(figsize=(13, 4.9), dpi=160, facecolor=SURFACE)
@@ -68,7 +70,7 @@ def main() -> None:
 
     ax = fig.add_axes([0.0, 0.11, 0.58, 0.68], projection=ccrs.Robinson(central_longitude=180))
     ax.set_facecolor(LAND)
-    field = ds.ssta.isel(time=k).values
+    field = ds.ssta_9120.isel(time=k).values
     lon = np.append(ds.lon.values, ds.lon.values[0] + 360)
     mesh = ax.pcolormesh(lon, ds.lat.values, np.concatenate([field, field[:, :1]], axis=1), cmap=DIVERGING,
                          norm=BoundaryNorm(np.arange(-3, 3.01, 0.25), DIVERGING.N, extend="both"),
@@ -82,7 +84,7 @@ def main() -> None:
     cb = fig.colorbar(mesh, cax=cax, orientation="horizontal", extend="both")
     cb.outline.set_visible(False)
     cb.ax.tick_params(labelsize=8, length=0)
-    cb.set_label("°C vs ERA5 1959–2016 monthly climatology", fontsize=8.5, color=INK2)
+    cb.set_label("°C vs ERA5 1991–2020 monthly climatology", fontsize=8.5, color=INK2)
 
     bx = fig.add_axes([0.63, 0.17, 0.33, 0.64])
     bx.set_facecolor(SURFACE)
@@ -94,7 +96,7 @@ def main() -> None:
         rec = next(x for x in iri["averages"] if x["model"] == avg)
         bx.plot([t0] + [season_center(s) for s in rec["seasons"]], [v0] + rec["data"], color=color, lw=1.8, zorder=3,
                 label=f"IRI {avg} mean (3-month)")
-    bx.plot([t0, *months], [v0, *nino], color=CAS, lw=2.2, marker="o", ms=4, mec=SURFACE, mew=1,
+    bx.plot([t_init, *months], [v_init, *nino], color=CAS, lw=2.2, marker="o", ms=4, mec=SURFACE, mew=1,
             markevery=range(1, len(months) + 1), zorder=4, label="CAS-Canglong (monthly)")
     bx.plot([o[0] for o in obs], [o[1] for o in obs], color=INK, lw=1.2, marker="D", ms=5, zorder=5,
             label="observed (IRI)")
@@ -112,7 +114,7 @@ def main() -> None:
     bx.xaxis.set_major_formatter(mdates.DateFormatter("%b\n%Y"))
     bx.tick_params(labelsize=8.5, length=0)
     bx.legend(loc="upper right", frameon=False, fontsize=8, labelcolor=INK2)
-    fig.text(0.63, 0.04, f"IRI plume published {iri['published']} (redrawn) · CAS index vs ERA5 1959–2016",
+    fig.text(0.63, 0.04, f"IRI plume published {iri['published']} (redrawn) · CAS index vs ERA5 1991–2020",
              fontsize=7.5, color=MUTED)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(a.out, facecolor=SURFACE)
