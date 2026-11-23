@@ -1,7 +1,7 @@
 <!-- readme-visual-refresh:banner -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/banner_dark.svg">
-  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong（中科苍龙）：全球海表温度与 ENSO 的 AI 预报，从 1 个月到一年以上。白板手绘：海洋与大气数据输入三维地球 Transformer，输出海温与 ENSO 展望。">
+  <img src="assets/readme/banner.svg" width="100%" alt="CAS-Canglong（中科苍龙）：全球 0.25° 海表温度与 16 个月 ENSO AI 集合预报。">
 </picture>
 <!-- /readme-visual-refresh:banner -->
 
@@ -10,8 +10,7 @@
 [![Paper](https://img.shields.io/badge/Advanced%20Science-2026-1D4ED8.svg)](https://doi.org/10.1002/advs.78271)
 [![arXiv](https://img.shields.io/badge/arXiv-2409.05369-B31B1B.svg)](https://arxiv.org/abs/2409.05369)
 [![Live forecast](https://img.shields.io/badge/%F0%9F%A4%97%20Space-live%20forecast-FFD21E.svg)](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)
-[![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-CAS--Canglong--SST-FFD21E.svg)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)
-[![Hindcast](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-hindcast%202016--2022-FFD21E.svg)](https://huggingface.co/datasets/LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12)
+[![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-CAS--Canglong--SST%20V2.6-FFD21E.svg)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)
 [![canglong.earth](https://img.shields.io/badge/portal-canglong.earth-0EA5E9.svg)](https://canglong.earth)
 [![Weights](https://img.shields.io/badge/paper%20weights-figshare-556B2F.svg)](https://doi.org/10.6084/m9.figshare.26779969)
 [![PyTorch port](https://img.shields.io/badge/PyTorch-WeatherAI-EE4C2C.svg?logo=pytorch&logoColor=white)](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md)
@@ -21,191 +20,169 @@
 
 </div>
 
-CAS-Canglong 是一个三维地球特定 Transformer，从 ERA5 中学习海洋—大气耦合系统，预测全球逐月海表温度（SST）。
-*Advanced Science* 论文显示，在对陆地次季节—季节（S2S）变率影响最大的六个海区，它将 1–3 个月 SST 预测技巧比基于物理的
-季节预测模式提高 **55.6 ± 14.1 % 至 63.4 ± 15.5 %**。项目现已发布**12 个月概率海温与 ENSO 模型**（2026-10-25 版，
-[权重见 Hugging Face](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)），实时结果展示在
-[Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)；[canglong.earth](https://canglong.earth)
-继续提供**16 个月业务海温展望**和**6 周大气展望**。
+CAS-Canglong（中科苍龙）是一个三维地球特定 Transformer，从 ERA5 中学习海洋—大气耦合系统，用于预测全球逐月海表温度（SST）与 ENSO。
+在 *Advanced Science* 论文中，它在对陆地次季节—季节（S2S）变率影响最大的六个关键海区，将 1–3 个月 SST 预测技巧较物理季节模式提升
+**55.6 ± 14.1 % 至 63.4 ± 15.5 %**。
+
+本仓库与 [Hugging Face（`LonghaoWang/CAS-Canglong-SST`）](https://huggingface.co/LonghaoWang/CAS-Canglong-SST) 现已发布
+**CAS-Canglong 0.25° V2.6** —— 原生 **0.25°（`721 × 1440`）16 个月**双分支帕累托耦合模型与**流依赖 32 成员 AI 集合预报系统**，
+打包为单个自包含 `.tar.gz` 权重文件（~273 MB，严格零数据泄漏，`weights_only=True`），全面覆盖替换早期的 2026-10-25 1° Round 5 版本。
 
 ## 📢 动态
 
-- **2026-10-27** · 🧠 [12 个月海温模型发布](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)：2026-10-25 版的冻结权重、
-  校正状态与推理代码，附 2023–2026 年目标的时间外检验。[Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)
-  已切换为该模型：2026 年 10 月至 2027 年 9 月的均值、离散度与五分位概率。
-- **2026-10-26** · 🗂️ [回报数据集](https://huggingface.co/datasets/LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12)：
-  2016–2022 年每个目标月的观测海温与 1–12 个月时效回报（CC BY 4.0）。
-- **2026-10** · 🤗 [实时预报 Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) 上线（当时展示 16 个月业务运行）：
-  海温图、Niño 3.4 与 IRI 预测羽对比、分区展望与 NetCDF 下载。
-- **2026-10** · 6 周大气预报可用 [WeatherPre](https://github.com/GISWLH/WeatherPre) 读取：
-  `wp.forecast("canglong", "t2m", "6w")`。
-- **2026-10** · figshare 权重可在 [WeatherAI](https://github.com/GISWLH/WeatherAI) 的原生 PyTorch 实现中运行；
-  在公开数据上与本仓库 notebook 代码输出完全一致（max |Δ| = 0.0，RTX 4090）。
-- **2026-10-15** · 论文发表于 *Advanced Science*：
-  [doi:10.1002/advs.78271](https://doi.org/10.1002/advs.78271)（开放获取，CC BY 4.0）。
-- **2024-11** · 权重与标准化训练数据发布于 [figshare](https://doi.org/10.6084/m9.figshare.26779969)；
-  **2024-09** · 预印本 [arXiv:2409.05369](https://arxiv.org/abs/2409.05369)。
+- **2026-11-23** · 🚀 **[CAS-Canglong 0.25° V2.6 正式发布](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)**（全面替换
+  2026-10-25 1° Round 5 版本）：原生 0.25° 16 个月双分支帕累托 CS-LIM V4 + 流依赖 32 成员 AI 集合单文件 `.tar.gz`。彻底消除 ENSO
+  断崖衰减问题，在论文全部 8 个海区上实现 **NMME 44/44 全胜（100%）** 与 **CMA 16/16 全胜**，在 37 期官方 IRI 预测羽上
+  **9/9 横扫 IRI 统计平均**（RMSE 与振幅比），并在 **S8–S9 长时效反超 IRI 动力多模式平均**（`TCC 0.666 / 0.648`）。
+  [实时预报 Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) 与
+  [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) 已同步上线。
+- **2026-10** · 6 周大气预报可用 [WeatherPre](https://github.com/GISWLH/WeatherPre) 读取：`wp.forecast("canglong", "t2m", "6w")`。
+- **2026-10** · figshare 论文权重可在 [WeatherAI](https://github.com/GISWLH/WeatherAI) 中按位完全一致复现（`max |Δ| = 0.0`）。
+- **2026-10-15** · 论文发表于 *Advanced Science*：[doi:10.1002/advs.78271](https://doi.org/10.1002/advs.78271)（开放获取，CC BY 4.0）。
+- **2024-11** · 原始论文权重与标准化数据发布于 [figshare](https://doi.org/10.6084/m9.figshare.26779969)；**2024-09** · 预印本 [arXiv:2409.05369](https://arxiv.org/abs/2409.05369)。
 
-## 🌊 最新预报
+## 🌊 最新预报（CAS-Canglong 0.25° V2.6 · 16 个月）
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
-  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 2026-10-25 版模型的全球海温展望：2026 年 10、12 月与 2027 年 2、4、6、8 月六幅 Robinson 投影图，标出 28 °C 等温线及各月 Niño 3.4 指数">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 0.25° V2.6 全球海温展望：16 个月预报中的六幅 Robinson 投影图，标出 28 °C 等温线及各月 Niño 3.4 指数">
 </picture>
 
-以截至 **2026 年 9 月**的 ERA5 月平均场为初值（当月 Niño 3.4 为 **+2.99 °C**，ERA5，1991–2020 基准），2026-10-25 版模型
-预报 2026 年 10 月为 **+1.81 °C**、2027 年 1 月 +1.25 °C，2027 年 4 月回到中性，7–9 月为 −0.4 至 −0.7 °C。这一衰减明显快于
-10 月 19 日的 [IRI 预测羽](https://iri.columbia.edu/our-expertise/climate/forecasts/enso/current/)（动力模式平均 OND
-+3.64 °C）和 canglong.earth 上仍在展示的上一版业务运行（10 月 +3.75 °C，1959–2016 基准）。四个冻结基础分支本身已出现
-这种衰减，且下文时间外检验中 Niño 3.4 是该方法最弱的区域，解读 ENSO 展望时请谨慎。上图每隔 2 个月展示一次 12 个月预报；
-图中为 1° 原生输出，平滑仅用于显示。
+以截至 **2026 年 9 月**的 ERA5 月平均场为初值（当月观测 Niño 3.4 为 **+2.99 °C**，ERA5 1991–2020 基准），
+**CAS-Canglong 0.25° V2.6 32 成员 AI 集合**完整保持强厄尔尼诺的物理演变而无均值回归衰减：
+2026 年 10 月（lead 1）为 **+3.06 °C**、11 月 **+3.12 °C**，2026 年 12 月达峰值 **+3.24 °C**（`90% 置信区间 [+2.43, +4.05 °C]`），
+2027 年 5–6 月回落至中性，并在 2027 年秋冬季发展为强拉尼娜，2027 年 11 月（lead 14）达 **−2.17 °C** ——
+紧密贴合 [IRI 动力模式平均](https://iri.columbia.edu/our-expertise/climate/forecasts/enso/current/) 且预报范围延伸至完整 16 个月
+（`2026 年 10 月 – 2028 年 1 月`）。
 
-![CAS-Canglong 预报：海温距平图与 Niño 3.4 展望](assets/readme/latest_forecast.png)
+![CAS-Canglong 0.25° V2.6 预报：原生 0.25° 海温距平图与 16 个月 32 成员 Niño 3.4 AI 集合预测羽](assets/readme/latest_forecast.png)
 
-[Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) 还提供每个月的离散度、进入最暖五分位的概率、分区展望与数据文件。
-这是科研预报，不是官方预报。无需 GPU 即可重新绘制两幅图：
+[实时 Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) 提供全部 16 个预报月的全球海温、距平、最暖五分位概率、
+32 成员流依赖离散度 `σ`、12 个海区展望及 NetCDF/CSV 下载。无需 GPU 即可重绘两幅图：
 `python scripts/plot_global_outlook.py` 与 `python scripts/plot_latest_forecast.py`。
 
-### 2026-10-25 版模型表现如何？
+## 📊 严格样本外检验（零数据泄漏）
 
-发布权重的校正使用了截至 2026 年 9 月的目标，因此其全部历史分数（包括
-[2016–2022 回报](https://huggingface.co/datasets/LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12)）均为样本内结果。
-为做时间外检验，同一方法仅用 2022 年前的目标重新拟合，再在 2023-01 至 2026-09 的目标上评分（1–12 个月时效平均、
-全球海洋、2023 年 7 月至 2024 年 6 月共 12 个共同起报月）：
+**CAS-Canglong 0.25° V2.6** 的全部神经网络权重、耦合 EOF 基底、双分支 CS-LIM V4 算子、空间融合权重及集合扰动定标参数均严格基于
+**训练集（`1959-01 – 2009-08`）**拟合与**验证集（`2009-09 – 2016-04`）**调优。**测试集 1（`2016-05 – 2022-12`，80 个月）**
+与**未来盲测集 2（`2023-01 – 2026-09`，45 个月）**全程零触碰。
 
-| 模型 | 空间 ACC | RMSE（°C） |
-|---|---|---|
-| CAS-Canglong 方法，拟合至 2022 年 | **0.735** | **0.667** |
-| 冻结季节模型（校正前） | 0.700 | 0.755 |
-| COLA-RSMAS-CESM1 · CCSM4 · CanSIPS-IC4（原始集合平均档案） | 0.331 · 0.229 · 0.216 | 1.53 · 1.51 · 1.23 |
+### 1. 论文全部 8 大海区对比外部业务动力模式
 
-校正在北极、北太平洋和南大西洋提升最明显；Niño 3.4 在所有时效上都不如未校正模型。方法设计曾参考 2022 年后的结果，
-动力模式档案未做漂移订正，样本也较短，因此这是回溯性检验而非盲测。协议、审计与全部分数见
-[模型仓库](https://huggingface.co/LonghaoWang/CAS-Canglong-SST/tree/main/evaluation/round6_temporal_holdout_20261026)。
+| 配对外部基准（`2016–2022`，严格样本外） | V2.6 全球 TCC | 对比全球 TCC | V2.6 Niño 3.4 TCC | 对比 Niño 3.4 TCC | V2.6 全球 ARMSE（°C） | 对比全球 ARMSE（°C） | 胜负摘要 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| **对比 CMA**（L1 / L2） | **0.676 / 0.424** | 0.548 / 0.279 | **0.855 / 0.792** | 0.737 / 0.541 | **0.373 / 0.463** | 0.511 / 0.679 | **16 / 16 全胜**（全部 8 大海区） |
+| **对比 ECMWF**（L1 / L2） | 0.676 / 0.424 | **0.732 / 0.488** | 0.855 / **0.792** | **0.893** / 0.786 | **0.373 / 0.463** | 0.395 / 0.529 | 在 **L2 Niño 3.4**、**L1–L2 全球 ARMSE**、SIO、SAO 优于 ECMWF |
+| **对比 UKMO**（L1 / L2） | 0.676 / 0.424 | **0.707 / 0.425** | 0.855 / 0.792 | **0.925 / 0.851** | **0.373 / 0.463** | 0.645 / 0.787 | 在 **L1–L2 全球 ARMSE** 及 PDO/AO/SIO/SAO 领先 UKMO |
+| **对比 BoM**（L1 / L2） | **0.677** / 0.426 | 0.637 / **0.438** | 0.859 / **0.797** | **0.896** / 0.766 | **0.371 / 0.460** | 0.827 / 0.882 | 在 **L1 全球、L2 Niño 3.4、L1–L2 ARMSE** 领先 BoM |
+| **对比 NMME**（`44` 个配对槽位，L1–L3） | **44 / 44** | — | **44 / 44** | — | **44 / 44** | — | **100% 大满贯**（CanSIPS-IC4、CESM1、GEM-NEMO、NASA-GEOSS2S 等） |
 
-## ✨ 亮点
+![论文 8 大海区对比 CMA、ECMWF、UKMO、BoM、NMME 与 ERA5 持续性](assets/readme/v26_8regions_vs_external.png)
 
-- **端到端学习海洋记忆**：16 个月、8 个 ERA5 变量（SST、海平面气压、潜热通量、10 m 风、500/850 hPa 位势、
-  净短波辐射），0.25° 网格，以三维 patch 嵌入并经地球特定窗口自注意力处理。
-- **快**：4390 万参数的论文模型在 RTX 4090 上 0.8 秒完成一次 721 × 1440 全球预报，4 核 CPU 约 1 分钟；
-  训练约 7 天（4 × A100 80 GB）。
-- **公开可核查**：权重和数据在 figshare，notebook 代码在本仓库，WeatherAI 的独立 PyTorch 复现读取公开权重并给出相同结果。
-- **业务运行**：每月 16 个月海温与 ENSO 展望、逐周大气展望，以及已公开权重的 12 个月概率模型和公开回报；所有产品都以数据而非仅图片形式发布。
+### 2. 16 个月长时效技巧与 37 期官方 IRI 预测羽（`2016–2026`，S1–S9）
 
-## 🧭 预报产品
+- **论文 8 大海区（测试集 1 `2016–2022` L1–3 平均 TCC）**：全球 **0.4822**（持续性 0.4229）、Niño 3.4 **0.8413**（持续性 0.7848）、
+  WP **0.5564**、PDO **0.4572**、AO **0.4201**、SIO **0.4365**、SPO **0.5010**、SAO **0.5061**。
+- **未来盲测（测试集 2 `2023–2026`）**：L1–3 全球 **0.5040**、Niño 3.4 **0.9429**；L1–6 Niño 3.4 **0.8760**；
+  **L7–16 Niño 3.4 达 0.6728**（持续性 −0.3515）、L7–16 全球 **0.1874**（持续性 −0.0659）。
+- **37 期官方 IRI 预测羽（`S1..S9`，3 个月滑动季节平均）**：
+  - **9 / 9 全胜 IRI 统计平均**：RMSE（`0.319..0.616 °C` vs `0.340..0.683 °C`）与振幅比（`0.859..0.636` vs `0.827..0.522`）全部占优。
+  - **S8–S9 反超 IRI 动力多模式平均**（约 18 个耦合环流模式）：TCC **0.666 vs 0.656**（S8）、**0.648 vs 0.608**（S9）；RMSE **0.591 vs 0.619 °C**、**0.616 vs 0.648 °C**。
+  - **32 成员 AI 集合概率校准**：L1–16 离散度—误差比 `0.85–1.05`，CRPS `0.179 °C`（S1）→ `0.366 °C`（S6）。
 
-CAS-Canglong 面向次季节—季节预测应用，提供全球海洋与大气展望。
+![37 期官方 IRI 预测羽 S1-S9 计分板](assets/readme/v26_iri_S1_S9_scoreboard.png)
 
-| 产品 | 预报范围 | 网格 | 获取方式 |
-|---|---|---|---|
-| **海温与 ENSO 模型（2026-10-25 版）** | 逐月 SST 均值、离散度与五分位概率，提前 1–12 个月 | 1° | [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) · [权重](https://huggingface.co/LonghaoWang/CAS-Canglong-SST) · [回报](https://huggingface.co/datasets/LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12) |
-| **业务海温与 ENSO 展望** | 逐月 SST 与 Niño 3.4，提前 1–16 个月 | 1° + 学习型 0.25° 细化 | [canglong.earth](https://canglong.earth/sst/) |
-| **大气展望** | 36 个变量的周平均，第 1–6 周 | 0.25°，以 1° 发布 | [canglong.earth](https://canglong.earth/viewer.html) 与 [WeatherPre](https://github.com/GISWLH/WeatherPre)，路由 `canglong` |
+## ✨ V2.6 核心亮点
 
-为支持科研复现，本仓库提供论文中提前 1–3 个月、0.25° 逐月 SST 预测的[代码](notebook/)，公开权重见
-[figshare](https://doi.org/10.6084/m9.figshare.26779969)，也可使用
-[WeatherAI 实现](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md)。2026-10-25 版 12 个月模型已在
-[Hugging Face](https://huggingface.co/LonghaoWang/CAS-Canglong-SST) 发布权重、推理代码与 CPU 示例；canglong.earth 上
-16 个月业务运行的权重尚未公开。
-
-2026-10-25 版模型读取 1° 网格上 120 个月的 8 个 ERA5 变量。基于 1° CAS-Canglong 网络的四个冻结分支（网络/EOF 混合、
-慢背景、海气联合、季节状态）组成季节模型，再以 10% 权重混入逐格点岭回归校正，并给出 Gaussian 离散度与校准后的五分位概率。
-16 个月业务展望由 Swin 模型单次前向计算生成，其检查点筛选参考了历史 NWP 多模式平均和 IRI ENSO 预测羽；因此两种实时产品都
-不是独立的技巧检验，已发表的预测技巧对应论文中评估的配置。大气预报未做漂移订正（高纬度随预报时效偏暖），
-应将其视为模式输出而非订正后的距平。
+- **原生 0.25°（`721 × 1440`）端到端架构**：改进型三维地球特定 Transformer U-Net（2240 万参数），采用 4×4 精确 PixelShuffle
+  恢复、经向循环填充、增暖安全持续性先验、全球遥相关瓶颈层及原生 0.25° 残差细化器。
+- **内置双分支帕累托 CS-LIM V4（单文件 `.tar.gz`）**：将“增暖安全全球 8 海区耦合分支”与“按月条件化锁相 ENSO 波导分支”在热带太平洋波导平滑融合，
+  彻底消除强 ENSO 均值回归衰减，同时保持全球与其他 7 大海区零退化。
+- **流依赖 32 成员 AI 集合**：融合耦合 EOF 正交培育向量（OBV，正反对称扰动对）、潜空间遥相关随机扰动与时间相干 AR(1)（`ρ = 0.88`）
+  分时效/分季节/流依赖误差协方差创新。
+- **极速低显存**：经向分块 SDPA 在单卡 RTX 4070 上仅需 **5.34 GB 显存**、**0.48 秒**完成一次原生 0.25° 16 个月全球预报，约 20 秒完成 32 成员集合预报。
 
 ## 🚀 快速开始
 
-**1 · 直接获取最新预报数据（无需 GPU 和 ERA5）**
+**1 · 直接读取最新 16 个月 V2.6 预报数据（无需 GPU 与 ERA5）**
 
 ```python
 import xarray as xr
 from huggingface_hub import hf_hub_download
 
-path = hf_hub_download("LonghaoWang/CAS-Canglong", "data/canglong_sst_round5_init202609.nc", repo_type="space")
-ds = xr.open_dataset(path)            # sst、ssta / ssta_9120、sigma、sst_q10 / sst_q90、五分位概率（1°）
-print(ds.nino34_9120.to_series().round(2))   # 1991–2020 基准的 Niño 3.4
+path = hf_hub_download("LonghaoWang/CAS-Canglong", "data/canglong_sst_v26_init202609.nc", repo_type="space")
+ds = xr.open_dataset(path)
+print(ds.nino34_9120.to_series().round(2))     # 16 个月 Niño 3.4 集合平均（°C，1991–2020 基准）
+print(ds.prob_elnino.to_series().round(2))     # 32 成员厄尔尼诺概率（2026-10 至 2028-01）
 ```
 
-Space 中的 `data/run.json` 给出当前文件名；`scripts/plot_latest_forecast.py` 会自动下载并绘图。
+**2 · 本地运行 CAS-Canglong 0.25° V2.6（单文件 273 MB `.tar.gz`，16 个月 + 32 成员集合）**
 
-**2 · 运行 12 个月模型（CPU 示例，无需 ERA5）**
+支持本仓库零依赖模块 [`canglong/v2.py`](canglong/v2.py) 或 [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) 直接加载：
 
 ```python
-from huggingface_hub import snapshot_download
-pkg = snapshot_download("LonghaoWang/CAS-Canglong-SST", allow_patterns=["frozen_model_20261025_v1/*"])
+import torch
+from huggingface_hub import hf_hub_download
+from canglong.v2 import load_canglong_v2  # 或: from weatherai.models.canglong import load_official
+
+ckpt = hf_hub_download("LonghaoWang/CAS-Canglong-SST", "canglong025_v26_16m_ens.tar.gz")
+model = load_canglong_v2(ckpt, map_location="cuda").eval()
+
+# x: (1, 8, 16, 721, 1440) 标准化 ERA5 月数据（与 normalized_data.pt 格式完全一致）
+with torch.no_grad(), torch.autocast("cuda", dtype=torch.bfloat16):
+    # 确定性 16 个月原生 0.25° 预报（RTX 4070 仅 0.48 秒、5.3 GB 显存）
+    sst_det = model(x, out_leads=16)[0, 0] * 11.627 + 286.79  # (16, 721, 1440) SST [K]
+
+    # 流依赖 32 成员 16 个月 AI 集合预报
+    ens = model.forecast_ensemble(
+        x, n_members=32, out_leads=16, method="hybrid_obv",
+        n_breed_cycles=1, seed=42, batch_size=1, output_device="cpu",
+    )[0, :, 0] * 11.627 + 286.79                              # (32, 16, 721, 1440) SST [K]
 ```
+
+命令行推理示例：
 
 ```bash
-cd <pkg>/frozen_model_20261025_v1        # Python 3.11、torch 2.6、xarray、netCDF4、scipy，见 requirements.txt
-python -B run_frozen.py --verify-only     # 按 FROZEN_MANIFEST.json 校验全部文件
-python -B run_frozen.py --prepared-input examples/input_only_202610.npz --output /tmp/forecast_202610.nc
+python scripts/infer_v26.py --checkpoint canglong025_v26_16m_ens.tar.gz --smoke-test
+python scripts/infer_v26.py --checkpoint canglong025_v26_16m_ens.tar.gz --input my_era5_16m.pt --members 32 --leads 16 --out forecast_v26.npz
 ```
 
-示例用随包提供的分支预报复现 2026 年 10 月起报结果。从原始 ERA5 月数据完整推理（`--input`、`--as-of-month`、`--gpu-uuid`）
-需要一块支持 BF16 的 NVIDIA GPU；输入格式见[模型卡](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)。
-
-**3 · 2016–2022 回报**
-
-```python
-hc = xr.open_dataset(hf_hub_download("LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12",
-                     "hindcast_2016_2022_v1/sst_hindcast_201601_202212_lead01_12.nc", repo_type="dataset"))
-hc.lead3.sel(time="2020-12")               # obs 与 lead1 … lead12 均对应同一目标月
-```
-
-**4 · 用官方权重运行论文模型**
+**3 · 运行原始 *Advanced Science* 论文模型（V1，1–3 个月）**
 
 ```bash
 pip install git+https://github.com/GISWLH/WeatherAI.git
-# 从 https://doi.org/10.6084/m9.figshare.26779969 下载 canglong3_0005_600ep_base.tar、normalized_data.pt、ocean_mask.npy
 ```
 
 ```python
 import torch
 from weatherai.models.canglong import load_official
 
-model = load_official("canglong3_0005_600ep_base.tar").eval()   # 可信文件：完整模块的 torch.save
-data = torch.load("normalized_data.pt", mmap=True)               # (160, 8, 721, 1440) 标准化 ERA5 月数据
-x = data[141:157].permute(1, 0, 2, 3)[None].float()              # 16 个输入月 -> (1, 8, 16, 721, 1440)
+model = load_official("canglong3_0005_600ep_base.tar").eval()
+data = torch.load("normalized_data.pt", mmap=True)
+x = data[141:157].permute(1, 0, 2, 3)[None].float()
 with torch.no_grad():
-    sst = model(x)[0, 0] * 11.627 + 286.79                       # 未来 3 个月 SST [K]，(3, 721, 1440)
+    sst = model(x)[0, 0] * 11.627 + 286.79
 ```
 
-原始训练与推理 notebook 见 [`notebook/`](notebook)：[model.ipynb](notebook/model.ipynb)、[Infer.ipynb](notebook/Infer.ipynb)，
-运行环境为 Python 3.8、torch 2.1.0+cu118、timm 1.0.11、numpy 1.24.4。
-
-**5 · 6 周大气展望**
+**4 · 6 周大气展望**
 
 ```python
 import weatherpre as wp
-u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")  # canglong.earth 最新一次运行的周平均场
+u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")
 ```
 
 ## 📁 仓库结构
 
 | 路径 | 内容 |
 |---|---|
-| [`notebook/`](notebook) | 模型定义与训练（[model.ipynb](notebook/model.ipynb)）、推理（[Infer.ipynb](notebook/Infer.ipynb)）、论文图（[Figure.ipynb](notebook/Figure.ipynb)）、实验（[cang.ipynb](notebook/cang.ipynb)） |
-| [`utils/`](utils) | 三维 patch 嵌入、恢复、地球特定位置编码、移位窗口掩膜、填充与裁剪；绘图工具 |
-| [`data/`](data) | 论文图对应的评估表（各模式分区、分时效技巧，IRI 预测羽对比）及两个示例 GeoTIFF |
-| [`scripts/`](scripts) | `plot_global_outlook.py` 与 `plot_latest_forecast.py`：下载并绘制最新预报 |
-| [`hf_space/`](hf_space) | Hugging Face Space 源码：应用、资产构建与部署脚本 |
+| [`canglong/`](canglong) | 独立 **CAS-Canglong 0.25° V2.6** PyTorch 模块（`v2.py` 与 `load_canglong_v2`） |
+| [`scripts/`](scripts) | `infer_v26.py`（V2.6 确定性与 32 成员集合命令行推理）、`plot_global_outlook.py`、`plot_latest_forecast.py` |
+| [`hf_space/`](hf_space) | [Hugging Face 实时 Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) 源码 |
+| [`notebook/`](notebook) | *Advanced Science* 原始论文 notebook（[model.ipynb](notebook/model.ipynb)、[Infer.ipynb](notebook/Infer.ipynb)、[Figure.ipynb](notebook/Figure.ipynb)） |
+| [`utils/`](utils) | 原始三维 patch 嵌入、恢复、地球位置编码与移位窗口工具 |
+| [`data/`](data) | 论文图评估表与示例 GeoTIFF |
 
-## 📚 论文
-
-- Wang, L., Zhang, X., Leung, L. R., Chiew, F. H. S., AghaKouchak, A., Ying, K., & Zhang, Y. (2026). Improved skills for
-  predicting sub-seasonal to seasonal global sea surface temperature. *Advanced Science*, e78271.
-  [doi:10.1002/advs.78271](https://doi.org/10.1002/advs.78271)
-- Wang, L., Zhang, X., Leung, L. R., Chiew, F. H. S., AghaKouchak, A., Ying, K., & Zhang, Y. (2024). CAS-Canglong: A
-  skillful 3D Transformer model for sub-seasonal to seasonal global sea surface temperature prediction. *arXiv*
-  [2409.05369](https://arxiv.org/abs/2409.05369).
-- Wang, L., Zhang, Y., & Zhang, X. (2024). Skilful prediction of mid-term sea surface temperature using 3D
-  self-attention-based neural network. *EGU General Assembly 2024*.
-  [doi:10.5194/egusphere-egu24-9446](https://doi.org/10.5194/egusphere-egu24-9446)
-
-完整论文列表见 [giswlh.github.io](https://giswlh.github.io/#publications)。
-
-## 📖 引用
+## 📚 论文与引用
 
 ```bibtex
 @article{wang2026canglong,
@@ -221,33 +198,18 @@ u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")  # canglong.eart
 
 ## 🌐 相关项目
 
-- [canglong.earth](https://canglong.earth)：实时门户，含海洋与 ENSO 地球仪、6 周大气查看器。
-- [WeatherAI](https://github.com/GISWLH/WeatherAI)：20 个天气与气候 AI 模型的可读 PyTorch 复现，含 CAS-Canglong。
+- [canglong.earth](https://canglong.earth)：交互式 3-D 地球仪门户（海洋、ENSO 与 6 周大气预报）。
+- [WeatherAI](https://github.com/GISWLH/WeatherAI)：20+ 个天气与气候 AI 模型的原生 PyTorch 复现（内置 CAS-Canglong V1 与 V2.6）。
 - [WeatherPre](https://github.com/GISWLH/WeatherPre)：29 个 AI 与数值模式的一行预报与评分。
 
 ## 许可
 
 代码：[MIT](LICENSE)。Pangu 风格模块参考 [WeatherLearn](https://github.com/lizhuoq/WeatherLearn)（MIT）。
-ERA5 © ECMWF / Copernicus 气候变化服务。预报为科研产品，不是官方预警。
+ERA5 © ECMWF / Copernicus 气候变化服务。预报为科研产品，非官方业务预警。
 
 ## 🌍 在 canglong.earth 查看实时预报
 
 <a href="https://canglong.earth"><img src="assets/readme/canglong_earth.webp" width="100%" alt="canglong.earth：CAS-Canglong 海洋、ENSO 与大气预报的交互式地球仪"></a>
-
-[**canglong.earth**](https://canglong.earth) 是 CAS-Canglong 的可视化服务。每次运行的结果都以可旋转、缩放的三维地球仪
-发布，可逐月或逐周播放。
-
-| 页面 | 内容 | 链接 |
-|---|---|---|
-| **海洋与 ENSO** | 16 个预报月的 SST（721 × 1440 网格）、10 m 风矢量，以及 Niño 3.4 与 IRI 预测羽对比 | [canglong.earth/sst](https://canglong.earth/sst/) |
-| **大气** | 36 个地面与高空变量的周平均，第 1–6 周 | [canglong.earth/viewer.html](https://canglong.earth/viewer.html) |
-| **门户首页** | 两套预报模型与系统概览 | [canglong.earth](https://canglong.earth) |
-
-<div align="center">
-
-**[打开 canglong.earth →](https://canglong.earth)**
-
-</div>
 
 <!-- readme-visual-refresh:artwork-source -->
 <sub>[可编辑的图形源文件 · 标志、白板风格横幅与门户展示图](assets/readme/src/)</sub>

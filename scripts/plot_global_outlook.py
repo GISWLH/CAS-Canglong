@@ -1,13 +1,11 @@
-"""Plot the global SST outlook of the latest CAS-Canglong run as six maps (no GPU, no ERA5 needed).
+"""Plot the global SST outlook of the latest CAS-Canglong 0.25° V2.6 run as six maps (no GPU, no ERA5 needed).
 
     pip install huggingface_hub xarray netCDF4 scipy matplotlib cartopy
     python scripts/plot_global_outlook.py                       # -> assets/readme/global_outlook{,_dark}.png
-    python scripts/plot_global_outlook.py --leads 1 2 3 4 5 6 --theme light
+    python scripts/plot_global_outlook.py --leads 1 3 6 9 12 15 --theme light
 
-Every second forecast month from lead 1 to lead 11 on a Pacific-centred Robinson projection (cut at 20°E, the
-Atlantic-Indian boundary), with isotherms every 5 °C and the 28 °C isotherm that bounds the warm pool. The native 1°
-SST is Gaussian-smoothed (σ = 1.5 grid cells) and resampled bicubically to 0.25° for display only; cells more than 1.5°
-from a model ocean point (sea ice, inland) stay blank.
+Six panels across the 16-month forecast on a Pacific-centred Robinson projection (cut at 20°E), with isotherms
+every 5 °C and the 28 °C isotherm bounding the warm pool.
 """
 from __future__ import annotations
 
@@ -38,16 +36,15 @@ THEMES = {
                  coast="#484f58", rim="#30363d", iso="#0d1117", warm_pool="#0d1117",
                  ramp=["#1d2a33", "#4a2f24", "#83391f", "#c2532a", "#ec7f45", "#f8b77c", "#fde6c4"]),
 }
-NINO34 = dict(lon=190, lat=-5, width=50, height=10)          # 170°W-120°W, 5°S-5°N
+NINO34 = dict(lon=190, lat=-5, width=50, height=10)
 
 
 def fetch(name: str) -> Path:
     return Path(hf_hub_download(SPACE, name, repo_type="space"))
 
 
-def smooth(field: np.ndarray, lat: np.ndarray, lon: np.ndarray, step: float = 0.25, sigma: float = 1.5,
+def smooth(field: np.ndarray, lat: np.ndarray, lon: np.ndarray, step: float = 0.25, sigma: float = 1.2,
            reach: float = 1.5) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Gaussian-smooth a 1° ocean field and resample it bicubically to `step` degrees, keeping the model's ocean."""
     valid = np.isfinite(field)
     dist, idx = ndimage.distance_transform_edt(~valid, return_indices=True)
     filled = ndimage.gaussian_filter(field[tuple(idx)], sigma, mode=("nearest", "wrap"))
@@ -56,7 +53,7 @@ def smooth(field: np.ndarray, lat: np.ndarray, lon: np.ndarray, step: float = 0.
     dist = np.concatenate([dist[:, -pad:], dist, dist[:, :pad]], axis=1)
     lat_hi = np.arange(lat[0], lat[-1] + step / 2, step)
     lon_hi = np.arange(lon[0], lon[0] + 360 + step / 2, step)
-    rows = np.interp(lat_hi, lat, np.arange(lat.size))     # model latitudes are physical centroids, not evenly spaced
+    rows = np.interp(lat_hi, lat, np.arange(lat.size))
     cols = (lon_hi - lon[0]) / (lon[1] - lon[0]) + pad
     grid = np.meshgrid(rows, cols, indexing="ij")
     out = ndimage.map_coordinates(filled, grid, order=3, mode="nearest")
@@ -66,12 +63,11 @@ def smooth(field: np.ndarray, lat: np.ndarray, lon: np.ndarray, step: float = 0.
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--leads", type=int, nargs=6, default=[1, 3, 5, 7, 9, 11], help="six forecast months, 1..12")
+    p.add_argument("--leads", type=int, nargs=6, default=[1, 3, 6, 9, 12, 15], help="six forecast months, 1..16")
     p.add_argument("--theme", choices=["light", "dark", "both"], default="both")
-    p.add_argument("--out", type=Path, default=Path("assets/readme/global_outlook.png"),
-                   help="light-theme path; the dark theme gets a _dark suffix")
+    p.add_argument("--out", type=Path, default=Path("assets/readme/global_outlook.png"))
     a = p.parse_args()
-    run = json.loads(fetch("data/run.json").read_text())
+    run = json.loads(fetch("data/run.json").read_text(encoding="utf-8"))
     ds = xr.open_dataset(fetch(f"data/{run['sst_file']}"))
     months = pd.to_datetime(ds.time.values)
     nino = ds.nino34_9120.values.astype(float)
@@ -91,9 +87,9 @@ def draw(fields: dict, months: pd.DatetimeIndex, nino: np.ndarray, init: pd.Time
     norm = Normalize(-2, 32)
     plt.rcParams.update({"font.family": ["Arial", "Helvetica", "DejaVu Sans"], "font.size": 10, "text.color": t["ink"]})
     fig = plt.figure(figsize=(16, 7.6), dpi=130, facecolor=t["surface"])
-    fig.text(0.03, 0.935, "Global sea-surface temperature outlook", fontsize=20, fontweight="bold", va="center")
-    fig.text(0.03, 0.885, f"CAS-Canglong · ERA5 input through {init:%B %Y} · every second month of the 12-month forecast",
-             fontsize=12, color=t["ink2"], va="center")
+    fig.text(0.03, 0.935, "Global sea-surface temperature outlook (CAS-Canglong 0.25° V2.6)", fontsize=19, fontweight="bold", va="center")
+    fig.text(0.03, 0.885, f"ERA5 input through {init:%B %Y} · 32-member AI ensemble mean across the 16-month forecast "
+             f"({months[0]:%b %Y} – {months[-1]:%b %Y})", fontsize=11.5, color=t["ink2"], va="center")
 
     crs = ccrs.Robinson(central_longitude=200)
     w, h, gx, gy, x0, y0 = 0.305, 0.335, 0.0175, 0.06, 0.03, 0.075
@@ -117,22 +113,20 @@ def draw(fields: dict, months: pd.DatetimeIndex, nino: np.ndarray, init: pd.Time
                                edgecolor=t["warm_pool"], linewidth=0.8, linestyle=(0, (2.5, 1.5)),
                                transform=ccrs.PlateCarree(), zorder=4))
         box = ax.get_position()
-        month = fig.text(box.x0 + 0.004, box.y1 + 0.016, f"{months[k - 1]:%b %Y}", fontsize=14, fontweight="bold",
-                         va="bottom")
+        month = fig.text(box.x0 + 0.004, box.y1 + 0.016, f"{months[k - 1]:%b %Y}", fontsize=14, fontweight="bold", va="bottom")
         right = month.get_window_extent(fig.canvas.get_renderer()).transformed(fig.transFigure.inverted()).x1
         fig.text(right + 0.008, box.y1 + 0.016, f"lead {k}", fontsize=12, color=t["muted"], va="bottom")
         fig.text(box.x1 - 0.004, box.y1 + 0.016, f"Niño 3.4  {nino[k - 1]:+.2f} °C", fontsize=12, color=t["ink2"],
                  va="bottom", ha="right")
 
     cax = fig.add_axes([0.775, 0.927, 0.195, 0.02])
-    cb = fig.colorbar(mesh, cax=cax, orientation="horizontal", extend="both", ticks=np.arange(0, 31, 5),
-                      extendfrac=0.05)
+    cb = fig.colorbar(mesh, cax=cax, orientation="horizontal", extend="both", ticks=np.arange(0, 31, 5), extendfrac=0.05)
     cb.outline.set_visible(False)
     cb.ax.tick_params(labelsize=10, length=0, pad=4, colors=t["ink2"])
     fig.text(0.765, 0.937, "SST (°C)", fontsize=11, color=t["ink2"], va="center", ha="right")
-    fig.text(0.03, 0.035, "Research forecast, not an official product. Native 1° output, smoothed (σ = 1.5°) and resampled to "
-             "0.25° for display. Isotherms every 5 °C; bold line: 28 °C; dashed box: Niño 3.4 region (index vs ERA5 1991–2020).",
-             fontsize=10, color=t["muted"], va="center")
+    fig.text(0.03, 0.035, "Research forecast, not an official product. CAS-Canglong 0.25° V2.6 32-member AI ensemble mean. "
+             "Isotherms every 5 °C; bold line: 28 °C; dashed box: Niño 3.4 (index vs ERA5 1991–2020).",
+             fontsize=9.8, color=t["muted"], va="center")
     fig.text(0.97, 0.035, "canglong.earth", fontsize=10, color=t["muted"], va="center", ha="right")
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, facecolor=t["surface"], pil_kwargs={"optimize": True})
