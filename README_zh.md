@@ -211,5 +211,5 @@ ERA5 © ECMWF / Copernicus 气候变化服务。预报为科研产品，非官�
 <a href="https://canglong.earth"><img src="assets/readme/canglong_earth.webp" width="100%" alt="canglong.earth：CAS-Canglong 海洋、ENSO 与大气预报的交互式地球仪"></a>
 
 <!-- readme-visual-refresh:artwork-source -->
-<sub>[可编辑的图形源文件 · 标志、白板风格横幅与门户展示图](assets/readme/src/)</sub>
+<sub>[可编辑的图形源文件 · 标志、像素风横幅与门户展示图](assets/readme/src/)</sub>
 <!-- /readme-visual-refresh:artwork-source -->

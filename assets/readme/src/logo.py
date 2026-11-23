@@ -1,10 +1,9 @@
 """CAS-Canglong logo: a dragon coiled round the Earth (a C for Canglong), the warm wave for the sea surface.
 
-    python assets/readme/src/logo.py assets/readme      # -> logo.svg, logo_dark.svg, src/logo_shapes.json
+    python assets/readme/src/logo.py assets/readme      # -> logo.svg, logo_dark.svg
 
-logo_shapes.json holds the same geometry for banner.mjs, which redraws the mark by hand. Needs numpy.
+banner.py redraws the same coil in pixel art for the README banner. Needs numpy.
 """
-import json
 import math
 import re
 import sys
@@ -72,7 +71,7 @@ def path_xf(d, origin, angle):
 
 def shapes():
     """The mark as a list of {role, d | circle, width}; roles: globe, wave, body, spike, head, eye, line, and spine
-    (the body's centre line, which only the hand-drawn banner uses)."""
+    (the body's centre line, which the logo does not draw)."""
     R = 38
     out = [dict(role="globe", cx=0, cy=0, r=20.5, width=4),
            dict(role="wave", d="M-18,3 C-12,-4 -6,-4 0,2 C6,8 12,8 18,2", width=4)]
@@ -133,5 +132,4 @@ if __name__ == "__main__":
     items, box = shapes()
     for theme in THEMES:
         (out / f"logo{'' if theme == 'light' else '_dark'}.svg").write_text(logo_svg(theme, items, box))
-    Path(__file__).with_name("logo_shapes.json").write_text(json.dumps({"box": box, "shapes": items}, indent=1) + "\n")
     print("ok")

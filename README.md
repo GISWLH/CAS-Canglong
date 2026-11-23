@@ -238,5 +238,5 @@ ERA5 is © ECMWF / Copernicus Climate Change Service. Forecasts are research pro
 6-week atmospheric forecasts.
 
 <!-- readme-visual-refresh:artwork-source -->
-<sub>[Editable artwork source · logo, whiteboard banner and portal showcase](assets/readme/src/)</sub>
+<sub>[Editable artwork source · logo, pixel-art banner and portal showcase](assets/readme/src/)</sub>
 <!-- /readme-visual-refresh:artwork-source -->
