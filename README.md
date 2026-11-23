@@ -53,7 +53,7 @@ live on the [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-C
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
-  <img src="assets/readme/global_outlook.png" width="100%" alt="Global SST outlook from CAS-Canglong 0.25° Ensemble: six Robinson maps across the 16-month forecast (Oct 2026 – Dec 2027), with the 28 °C isotherm and Niño 3.4 index">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="Global SST anomaly outlook from CAS-Canglong 0.25° Ensemble: six IPCC-style Robinson maps across the 16-month forecast (Oct 2026 – Dec 2027), with ensemble-robust stippling and Niño 3.4 index">
 </picture>
 
 Initialised with ERA5 monthly means through **September 2026** (observed Niño 3.4 = **+2.99 °C**, ERA5 1991–2020 base),

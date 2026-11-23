@@ -46,7 +46,7 @@ CAS-Canglong（中科苍龙）是一个三维地球特定 Transformer，从 ERA5
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
-  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 0.25° Ensemble 全球海温展望：16 个月预报中的六幅 Robinson 投影图，标出 28 °C 等温线及各月 Niño 3.4 指数">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="CAS-Canglong 0.25° Ensemble 全球海温距平展望：16 个月预报中的六幅 IPCC 风格 Robinson 投影图，标出集合显著性打点及各月 Niño 3.4 指数">
 </picture>
 
 以截至 **2026 年 9 月**的 ERA5 月平均场为初值（当月观测 Niño 3.4 为 **+2.99 °C**，ERA5 1991–2020 基准），
