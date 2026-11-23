@@ -9,7 +9,7 @@ python_version: "3.12"
 app_file: app.py
 pinned: true
 license: mit
-short_description: 16-month 0.25° global SST & 32-member AI ensemble ENSO outlook
+short_description: 16-month 0.25° global SST & 32-member AI ensemble outlook
 models:
   - LonghaoWang/CAS-Canglong-SST
 tags:
