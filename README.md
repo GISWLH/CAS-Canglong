@@ -10,7 +10,7 @@
 [![Paper](https://img.shields.io/badge/Advanced%20Science-2026-1D4ED8.svg)](https://doi.org/10.1002/advs.78271)
 [![arXiv](https://img.shields.io/badge/arXiv-2409.05369-B31B1B.svg)](https://arxiv.org/abs/2409.05369)
 [![Live forecast](https://img.shields.io/badge/%F0%9F%A4%97%20Space-live%20forecast-FFD21E.svg)](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong)
-[![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-CAS--Canglong--SST%20V2.6-FFD21E.svg)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)
+[![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-CAS--Canglong--SST%200.25%C2%B0-FFD21E.svg)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)
 [![canglong.earth](https://img.shields.io/badge/portal-canglong.earth-0EA5E9.svg)](https://canglong.earth)
 [![Weights](https://img.shields.io/badge/paper%20weights-figshare-556B2F.svg)](https://doi.org/10.6084/m9.figshare.26779969)
 [![PyTorch port](https://img.shields.io/badge/PyTorch-WeatherAI-EE4C2C.svg?logo=pytorch&logoColor=white)](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md)
@@ -26,18 +26,20 @@ monthly global sea-surface temperature (SST) and ENSO. In our *Advanced Science*
 SST skill by **55.6 ± 14.1 % to 63.4 ± 15.5 %** over physics-based seasonal models across six key ocean regions.
 
 This repository and [Hugging Face (`LonghaoWang/CAS-Canglong-SST`)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)
-now release **CAS-Canglong 0.25° V2.6** — a native **0.25° (`721 × 1440`) 16-month** Dual-Branch Pareto coupled model
-with a calibrated **flow-dependent 32-member AI ensemble**, packaged as a single self-contained `.tar.gz` checkpoint
-(~273 MB, zero leakage, `weights_only=True`), completely replacing the earlier 2026-10-25 1° Round 5 release.
+now provide the updated **CAS-Canglong 0.25°** and **CAS-Canglong 0.25° Ensemble** models — native **0.25° (`721 × 1440`)**
+16-month global SST and **32-member ensemble** ENSO forecasts packaged in a single `.tar.gz` checkpoint (~273 MB), shown
+live on the [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) and
+[canglong.earth](https://canglong.earth).
 
 ## 📢 News
 
-- **2026-11-23** · 🚀 **[CAS-Canglong 0.25° V2.6 released](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)** (full
-  replacement of the 2026-10-25 1° Round 5 release): native 0.25° 16-month Dual-Branch Pareto CS-LIM V4 + Flow-Dependent
-  32-Member AI Ensemble in a single 273 MB `.tar.gz`. Eliminates ENSO cliff-collapse damping, sweeps **NMME 44/44 (100%)**
-  and **CMA 16/16** across all 8 paper regions, beats **IRI Statistical Mean 9/9** (RMSE & amplitude), and outperforms
-  **IRI Dynamical Mean** at S8–S9 (`TCC 0.666 / 0.648`). Live now on the
-  [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) and [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md).
+- **2026-11-23** · 🚀 **[CAS-Canglong 0.25° & 0.25° Ensemble updated](https://huggingface.co/LonghaoWang/CAS-Canglong-SST)**:
+  updated native 0.25° 16-month global SST and 32-member ensemble forecast model in a single `.tar.gz` checkpoint. In
+  strictly out-of-sample evaluation, it sweeps **NMME 44/44 (100%)** and **CMA 16/16** across all 8 paper regions,
+  beats **IRI Statistical Mean 9/9** (RMSE & amplitude), and outperforms **IRI Dynamical Mean** at S8–S9
+  (`TCC 0.666 / 0.648`). Live now on the
+  [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) and
+  [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md).
 - **2026-10** · The six-week atmospheric run can be read with [WeatherPre](https://github.com/GISWLH/WeatherPre):
   `wp.forecast("canglong", "t2m", "6w")`.
 - **2026-10** · The figshare paper checkpoint runs bit-exact in [WeatherAI](https://github.com/GISWLH/WeatherAI) (`max |Δ| = 0.0`).
@@ -47,38 +49,35 @@ with a calibrated **flow-dependent 32-member AI ensemble**, packaged as a single
   [figshare](https://doi.org/10.6084/m9.figshare.26779969). **2024-09** · Preprint
   [arXiv:2409.05369](https://arxiv.org/abs/2409.05369).
 
-## 🌊 Latest forecast (CAS-Canglong 0.25° V2.6 · 16 months)
+## 🌊 Latest forecast (CAS-Canglong 0.25° Ensemble · 16 months)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/global_outlook_dark.png">
-  <img src="assets/readme/global_outlook.png" width="100%" alt="Global SST outlook from CAS-Canglong 0.25° V2.6: six Robinson maps across the 16-month forecast (Oct 2026 – Dec 2027), with the 28 °C isotherm and Niño 3.4 index">
+  <img src="assets/readme/global_outlook.png" width="100%" alt="Global SST outlook from CAS-Canglong 0.25° Ensemble: six Robinson maps across the 16-month forecast (Oct 2026 – Dec 2027), with the 28 °C isotherm and Niño 3.4 index">
 </picture>
 
 Initialised with ERA5 monthly means through **September 2026** (observed Niño 3.4 = **+2.99 °C**, ERA5 1991–2020 base),
-the **CAS-Canglong 0.25° V2.6 32-member AI ensemble** maintains full physical El Niño evolution rather than damping:
-**+3.06 °C** in October 2026 (lead 1), **+3.12 °C** in November, peaking at **+3.24 °C** in December 2026
-(`90% CI [+2.43, +4.05 °C]`), transitioning through neutral in May–June 2027, and developing a strong La Niña rebound
-reaching **−2.17 °C** in November 2027 (lead 14) — closely tracking the
-[IRI dynamical plume](https://iri.columbia.edu/our-expertise/climate/forecasts/enso/current/) while extending a full
-16 months ahead (`Oct 2026 – Jan 2028`).
+**CAS-Canglong 0.25° Ensemble** (32 members) forecasts **+3.06 °C** in October 2026 (lead 1), **+3.12 °C** in November,
+peaking at **+3.24 °C** in December 2026 (`90% CI [+2.43, +4.05 °C]`), transitioning through neutral in May–June 2027,
+and developing La Niña conditions reaching **−2.17 °C** in November 2027 (lead 14) — closely tracking the
+[IRI dynamical plume](https://iri.columbia.edu/our-expertise/climate/forecasts/enso/current/) while extending 16 months
+ahead (`Oct 2026 – Jan 2028`).
 
-![CAS-Canglong 0.25° V2.6 forecast: native 0.25° SST anomaly map and 16-month 32-member Niño 3.4 AI ensemble plume](assets/readme/latest_forecast.png)
+![CAS-Canglong 0.25° Ensemble forecast: global SST anomaly map and 16-month 32-member Niño 3.4 ensemble plume](assets/readme/latest_forecast.png)
 
 The [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) provides interactive maps for all 16 forecast months
-(SST, SST anomaly, top-quintile probability, and 32-member AI ensemble spread `σ`), 12 regional outlooks, and NetCDF/CSV
+(SST, SST anomaly, top-quintile probability, and 32-member ensemble spread `σ`), 12 regional outlooks, and NetCDF/CSV
 downloads. Regenerate both figures without a GPU: `python scripts/plot_global_outlook.py` and
 `python scripts/plot_latest_forecast.py`.
 
-## 📊 Strictly Out-of-Sample Verification (Zero Leakage)
+## 📊 Out-of-Sample Verification
 
-Every neural backbone weight, EOF basis, Dual-Branch CS-LIM V4 operator, spatial blend map, and AI ensemble calibration
-factor in **CAS-Canglong 0.25° V2.6** was fit exclusively on **Train (`1959-01 – 2009-08`)** and tuned on
-**Validation (`2009-09 – 2016-04`)**. Both **Test 1 (`2016-05 – 2022-12`, 80 months)** and
-**Blind Test 2 (`2023-01 – 2026-09`, 45 months)** were strictly untouched.
+Trained on **1959-01 – 2009-08** and validated on **2009-09 – 2016-04**; both **Test 1 (`2016-05 – 2022-12`, 80 months)**
+and **Blind Test 2 (`2023-01 – 2026-09`, 45 months)** are strictly out-of-sample.
 
 ### 1. All 8 Paper Regions vs External Operational Dynamical Models
 
-| Benchmark (`2016–2022` paired, strictly out-of-sample) | V2.6 Global TCC | Ref Global TCC | V2.6 Niño 3.4 TCC | Ref Niño 3.4 TCC | V2.6 Global ARMSE (°C) | Ref Global ARMSE (°C) | Head-to-Head |
+| Benchmark (`2016–2022` paired, out-of-sample) | 0.25° Global TCC | Ref Global TCC | 0.25° Niño 3.4 TCC | Ref Niño 3.4 TCC | 0.25° Global ARMSE (°C) | Ref Global ARMSE (°C) | Head-to-Head |
 |---|---:|---:|---:|---:|---:|---:|---|
 | **vs CMA** (Lead 1 / Lead 2) | **0.676 / 0.424** | 0.548 / 0.279 | **0.855 / 0.792** | 0.737 / 0.541 | **0.373 / 0.463** | 0.511 / 0.679 | **16 / 16 sweep** (all 8 regions) |
 | **vs ECMWF** (Lead 1 / Lead 2) | 0.676 / 0.424 | **0.732 / 0.488** | 0.855 / **0.792** | **0.893** / 0.786 | **0.373 / 0.463** | 0.395 / 0.529 | Beats ECMWF in **L2 Niño 3.4**, **L1–L2 Global ARMSE**, SIO, SAO |
@@ -86,7 +85,7 @@ factor in **CAS-Canglong 0.25° V2.6** was fit exclusively on **Train (`1959-01 
 | **vs BoM** (Lead 1 / Lead 2) | **0.677** / 0.426 | 0.637 / **0.438** | 0.859 / **0.797** | **0.896** / 0.766 | **0.371 / 0.460** | 0.827 / 0.882 | Beats BoM in **L1 Global, L2 Niño 3.4, L1–L2 ARMSE** |
 | **vs NMME** (`44` paired slots, L1–L3) | **44 / 44** | — | **44 / 44** | — | **44 / 44** | — | **100% Grand Slam** (CanSIPS-IC4, CESM1, GEM-NEMO, NASA-GEOSS2S, ...) |
 
-![All 8 Paper Regions: V2.6 vs CMA, ECMWF, UKMO, BoM, NMME, and ERA5 Persistence](assets/readme/v26_8regions_vs_external.png)
+![All 8 Paper Regions: CAS-Canglong 0.25° vs CMA, ECMWF, UKMO, BoM, NMME, and ERA5 Persistence](assets/readme/regions_vs_external.png)
 
 ### 2. Long-Range 16-Month Skill & 37 Official IRI Plumes (`2016–2026`, S1–S9)
 
@@ -97,36 +96,23 @@ factor in **CAS-Canglong 0.25° V2.6** was fit exclusively on **Train (`1959-01 
 - **37 Official IRI Plumes (`S1..S9`, 3-month seasonal means):**
   - Sweeps **IRI Statistical Mean 9 / 9** on both **RMSE** (`0.319..0.616 °C` vs `0.340..0.683 °C`) and **Amplitude Ratio** (`0.859..0.636` vs `0.827..0.522`).
   - Outperforms **IRI Dynamical Mean** (~18 coupled GCMs) at **S8–S9** in both TCC (**0.666 vs 0.656** at S8; **0.648 vs 0.608** at S9) and RMSE (**0.591 vs 0.619 °C**; **0.616 vs 0.648 °C**).
-  - **32-Member AI Ensemble calibration:** Lead 1–16 Niño 3.4 Spread–Skill Ratio `0.85–1.05`, CRPS `0.179 °C` (S1) → `0.366 °C` (S6).
+  - **0.25° Ensemble (32 members):** Lead 1–16 Niño 3.4 Spread–Skill Ratio `0.85–1.05`, CRPS `0.179 °C` (S1) → `0.366 °C` (S6).
 
-![37 Official IRI Plumes S1-S9 Scoreboard](assets/readme/v26_iri_S1_S9_scoreboard.png)
-
-## ✨ Highlights of V2.6
-
-- **Native 0.25° (`721 × 1440`) End-to-End Architecture.** Fixed 3-D Earth-specific Transformer U-Net (22.4 M params) with
-  exact 4×4 PixelShuffle recovery, circular longitude padding, warming-safe persistence prior, global teleconnection
-  bottleneck, and native 0.25° residual refiner.
-- **Dual-Branch Pareto CS-LIM V4 (Built Inside the Single `.tar.gz`).** Decouples the warming-safe global 8-region coupled
-  ocean–atmosphere branch from a month-conditioned cyclostationary phase-locked ENSO waveguide branch, delivering strong
-  non-mean-reverting ENSO peaks without degrading any of the 8 global/regional SST domains.
-- **Calibrated Flow-Dependent 32-Member AI Ensemble.** Combines Orthogonal AI Bred Vectors (OBV) in coupled ocean–atmosphere
-  EOF space (antithetic `±δ` pairs), stochastic latent teleconnection perturbations, and temporally coherent AR(1)
-  (`ρ = 0.88`) lead/season/flow-calibrated coupled-EOF innovations.
-- **Fast & Memory-Lean.** Longitude-chunked SDPA runs a full 0.25° 16-month deterministic forecast in **0.48 s** on an
-  RTX 4070 (**5.34 GB VRAM**), and a 32-member 16-month ensemble in ~20 s.
+![37 Official IRI Plumes S1-S9 Scoreboard](assets/readme/iri_S1_S9_scoreboard.png)
 
 ## 🧭 Forecast products
 
 | Product | Forecast range | Grid | Access |
 |---|---|---|---|
-| **CAS-Canglong 0.25° V2.6 (16m + 32m AI Ensemble)** | monthly SST mean, spread, 90% CI & quintile probabilities, 1–16 months ahead | Native **0.25°** (`721 × 1440`) | [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) · [HF Weights (`.tar.gz`)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST) · [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
+| **CAS-Canglong 0.25°** | monthly deterministic global SST, 1–16 months ahead | Native **0.25°** (`721 × 1440`) | [HF Weights (`.tar.gz`)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST) · [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
+| **CAS-Canglong 0.25° Ensemble** | 32-member monthly SST mean, spread, 90% CI & quintile probabilities, 1–16 months ahead | Native **0.25°** (`721 × 1440`) | [Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) · [HF Weights (`.tar.gz`)](https://huggingface.co/LonghaoWang/CAS-Canglong-SST) · [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
 | **3-D Interactive Portal** | monthly 16-month SST & Niño 3.4 globe + 6-week atmosphere | 0.25° / 1° | [canglong.earth](https://canglong.earth/sst/) |
 | **Atmospheric outlook** | weekly means of 36 variables, weeks 1–6 | 0.25°, published at 1° | [canglong.earth](https://canglong.earth/viewer.html) · [WeatherPre](https://github.com/GISWLH/WeatherPre) (`canglong`) |
-| **Original *Advanced Science* Paper Model (V1)** | monthly SST, 1–3 months ahead | 0.25° | [`notebook/`](notebook/) · [figshare](https://doi.org/10.6084/m9.figshare.26779969) · [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
+| **Original *Advanced Science* Paper Model** | monthly SST, 1–3 months ahead | 0.25° | [`notebook/`](notebook/) · [figshare](https://doi.org/10.6084/m9.figshare.26779969) · [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md) |
 
 ## 🚀 Quick start
 
-**1 · Latest 16-month V2.6 forecast as data (no GPU, no ERA5)**
+**1 · Latest 16-month forecast as data (no GPU, no ERA5)**
 
 ```python
 import xarray as xr
@@ -138,9 +124,9 @@ print(ds.nino34_9120.to_series().round(2))     # 16-month Niño 3.4 ensemble mea
 print(ds.prob_elnino.to_series().round(2))     # 32-member El Niño probability (Oct 2026 – Jan 2028)
 ```
 
-**2 · Run CAS-Canglong 0.25° V2.6 locally (single-file 273 MB `.tar.gz`, 16 months + 32-member AI ensemble)**
+**2 · Run CAS-Canglong 0.25° & 0.25° Ensemble locally (single-file 273 MB `.tar.gz`)**
 
-Works with **zero extra dependencies** via [`canglong/v2.py`](canglong/v2.py) or directly through
+Works directly via [`canglong/v2.py`](canglong/v2.py) or
 [WeatherAI](https://github.com/GISWLH/WeatherAI/blob/main/docs/models/canglong.md):
 
 ```python
@@ -153,13 +139,12 @@ model = load_canglong_v2(ckpt, map_location="cuda").eval()
 
 # x: (1, 8, 16, 721, 1440) normalized ERA5 monthly window (exact same format as normalized_data.pt)
 with torch.no_grad(), torch.autocast("cuda", dtype=torch.bfloat16):
-    # Deterministic 16-month native 0.25° forecast (0.48 s on RTX 4070, 5.3 GB VRAM)
+    # CAS-Canglong 0.25° deterministic 16-month forecast
     sst_det = model(x, out_leads=16)[0, 0] * 11.627 + 286.79  # (16, 721, 1440) SST [K]
 
-    # Flow-dependent 32-member 16-month AI ensemble
+    # CAS-Canglong 0.25° Ensemble (32 members, 16 months)
     ens = model.forecast_ensemble(
-        x, n_members=32, out_leads=16, method="hybrid_obv",
-        n_breed_cycles=1, seed=42, batch_size=1, output_device="cpu",
+        x, n_members=32, out_leads=16, seed=42, batch_size=1, output_device="cpu",
     )[0, :, 0] * 11.627 + 286.79                              # (32, 16, 721, 1440) SST [K]
 ```
 
@@ -167,10 +152,10 @@ Or run the CLI inference script directly:
 
 ```bash
 python scripts/infer_v26.py --checkpoint canglong025_v26_16m_ens.tar.gz --smoke-test
-python scripts/infer_v26.py --checkpoint canglong025_v26_16m_ens.tar.gz --input my_era5_16m.pt --members 32 --leads 16 --out forecast_v26.npz
+python scripts/infer_v26.py --checkpoint canglong025_v26_16m_ens.tar.gz --input my_era5_16m.pt --members 32 --leads 16 --out forecast_025_ens.npz
 ```
 
-**3 · Run the original *Advanced Science* paper model (V1, 1–3 months)**
+**3 · Run the original *Advanced Science* paper model (1–3 months)**
 
 ```bash
 pip install git+https://github.com/GISWLH/WeatherAI.git
@@ -199,8 +184,8 @@ u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")
 
 | Path | Content |
 |---|---|
-| [`canglong/`](canglong) | Standalone **CAS-Canglong 0.25° V2.6** PyTorch implementation (`v2.py` + `load_canglong_v2`) |
-| [`scripts/`](scripts) | `infer_v26.py` (V2.6 deterministic & 32-member AI ensemble CLI), `plot_global_outlook.py`, `plot_latest_forecast.py` |
+| [`canglong/`](canglong) | Standalone **CAS-Canglong 0.25°** & **0.25° Ensemble** PyTorch implementation (`v2.py` + `load_canglong_v2`) |
+| [`scripts/`](scripts) | `infer_v26.py` (0.25° deterministic & 32-member ensemble CLI), `plot_global_outlook.py`, `plot_latest_forecast.py` |
 | [`hf_space/`](hf_space) | Source of the live [Hugging Face Space](https://huggingface.co/spaces/LonghaoWang/CAS-Canglong) (Gradio app, asset builder, deploy script) |
 | [`notebook/`](notebook) | Original *Advanced Science* paper notebooks ([model.ipynb](notebook/model.ipynb), [Infer.ipynb](notebook/Infer.ipynb), [Figure.ipynb](notebook/Figure.ipynb)) |
 | [`utils/`](utils) | Original 3-D patch embedding, recovery, Earth-specific position index, shifted-window helpers |
@@ -235,7 +220,7 @@ u = wp.forecast("canglong", ["t2m", "tp", "z500", "msl"], "6w")
 ## 🌐 Related
 
 - [canglong.earth](https://canglong.earth) — interactive 3-D globe portal for ocean, ENSO, and 6-week atmosphere outlooks.
-- [WeatherAI](https://github.com/GISWLH/WeatherAI) — readable PyTorch ports of 20+ weather and climate AI models (CAS-Canglong V1 & V2.6 included).
+- [WeatherAI](https://github.com/GISWLH/WeatherAI) — readable PyTorch ports of 20+ weather and climate AI models (CAS-Canglong included).
 - [WeatherPre](https://github.com/GISWLH/WeatherPre) — one-line forecasts and scoring across 29 AI and NWP models.
 
 ## License

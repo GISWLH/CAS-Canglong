@@ -1,9 +1,9 @@
-"""Render the Hugging Face Space assets from a CAS-Canglong 0.25° V2.6 forecast release.
+"""Render the Hugging Face Space assets from a CAS-Canglong 0.25° forecast release.
 
     python hf_space/scripts/build_assets.py --products products/ --iri iri_latest.json \
         --atmos canglong_atmos_start20261022.nc --out hf_space/build
 
-`--products` contains the V2.6 release outputs: `canglong_sst_v26_init*.nc`, `nino34.csv`,
+`--products` contains the release outputs: `canglong_sst_v26_init*.nc`, `nino34.csv`,
 `hindcast_nino34.csv`, `hindcast_nino34_skill.csv`, `v26_heldout_metrics.csv`, and
 `products_manifest.json`. Writes `data/` and `assets/maps/*.png` (Robinson maps for leads 0..16
 and 6-week atmosphere) into `--out`.
@@ -73,7 +73,7 @@ def robinson_map(field, lat, lon, path: Path, *, cmap, levels, extend, cbar_labe
 
 def build_sst(ds: xr.Dataset, out: Path, init: str) -> list[dict]:
     lat, lon = ds.lat.values, ds.lon.values
-    foot = (f"CAS-Canglong 0.25° V2.6 (16-month 32-member AI ensemble) · input: ERA5 through {init} · "
+    foot = (f"CAS-Canglong 0.25° Ensemble (16-month, 32 members) · input: ERA5 through {init} · "
             "research forecast, not an official product")
     ssta_levels = np.arange(-3.0, 3.01, 0.25)
     sst_levels = np.arange(-2.0, 32.01, 2.0)
@@ -83,7 +83,7 @@ def build_sst(ds: xr.Dataset, out: Path, init: str) -> list[dict]:
     for i, t in enumerate(ds.time.values):
         frames.append((f"t{i + 1:02d}", f"{month_label(t)} (lead {i + 1})", ds.ssta_9120.isel(time=i).values,
                        ds.sst.isel(time=i).values - 273.15, ds.p_upper_quintile.isel(time=i).values,
-                       ds.sigma.isel(time=i).values, f"V2.6 32-member AI ensemble forecast for {month_label(t)}, {i + 1}-month lead"))
+                       ds.sigma.isel(time=i).values, f"CAS-Canglong 0.25° Ensemble (32 members) for {month_label(t)}, {i + 1}-month lead"))
     index = []
     for key, label, ssta, sst, pup, sigma, sub in frames:
         robinson_map(ssta, lat, lon, out / f"assets/maps/ssta_{key}.png", cmap=DIVERGING, levels=ssta_levels,
@@ -97,11 +97,11 @@ def build_sst(ds: xr.Dataset, out: Path, init: str) -> list[dict]:
                          levels=np.array([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]), extend="neither",
                          cbar_label="Probability (%) of the warmest fifth of the 1959–2009 climate",
                          title=f"Chance of a top-quintile month · {label}",
-                         subtitle=sub + " · 32-member AI ensemble exceedance probability (20 % = climatology)", footnote=foot)
+                         subtitle=sub + " · exceedance probability (20 % = climatology)", footnote=foot)
             robinson_map(sigma, lat, lon, out / f"assets/maps/sigma_{key}.png", cmap=SPREAD,
                          levels=np.array([0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.25, 1.5, 2.0]), extend="max",
-                         cbar_label="32-member AI ensemble spread σ (°C)", title=f"Flow-dependent forecast uncertainty · {label}",
-                         subtitle=sub + " · Orthogonal AI Bred Vectors + Stochastic Latent + Error-Cov", footnote=foot)
+                         cbar_label="32-member ensemble spread σ (°C)", title=f"Ensemble spread (σ) · {label}",
+                         subtitle=sub + " · 32-member ensemble spread", footnote=foot)
         index.append({"key": key, "label": label})
         print("map", key, flush=True)
     return index
@@ -163,7 +163,7 @@ def main() -> None:
 
     man = json.loads((a.products / "products_manifest.json").read_text(encoding="utf-8"))
     meta = {
-        "model": "CAS-Canglong 0.25° V2.6 (16-Month Dual-Branch Pareto + 32-Member AI Ensemble, release 2026-11-23)",
+        "model": "CAS-Canglong 0.25° & 0.25° Ensemble (16-Month, 32 Members, updated 2026-11-23)",
         "model_repo": "LonghaoWang/CAS-Canglong-SST",
         "hindcast_dataset": "LonghaoWang/SST-Hindcast-2016-2022-1deg-lead1-12",
         "sst_file": sst_path.name,

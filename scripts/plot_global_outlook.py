@@ -1,4 +1,4 @@
-"""Plot the global SST outlook of the latest CAS-Canglong 0.25° V2.6 run as six maps (no GPU, no ERA5 needed).
+"""Plot the global SST outlook of the latest CAS-Canglong 0.25° Ensemble run as six maps (no GPU, no ERA5 needed).
 
     pip install huggingface_hub xarray netCDF4 scipy matplotlib cartopy
     python scripts/plot_global_outlook.py                       # -> assets/readme/global_outlook{,_dark}.png
@@ -39,7 +39,11 @@ THEMES = {
 NINO34 = dict(lon=190, lat=-5, width=50, height=10)
 
 
-def fetch(name: str) -> Path:
+def fetch(name: str, local_dir: Path | None = None) -> Path:
+    if local_dir is not None:
+        candidate = local_dir / name
+        if candidate.exists():
+            return candidate
     return Path(hf_hub_download(SPACE, name, repo_type="space"))
 
 
@@ -66,9 +70,10 @@ def main() -> None:
     p.add_argument("--leads", type=int, nargs=6, default=[1, 3, 6, 9, 12, 15], help="six forecast months, 1..16")
     p.add_argument("--theme", choices=["light", "dark", "both"], default="both")
     p.add_argument("--out", type=Path, default=Path("assets/readme/global_outlook.png"))
+    p.add_argument("--local-dir", type=Path, default=None, help="optional local Space root containing data/")
     a = p.parse_args()
-    run = json.loads(fetch("data/run.json").read_text(encoding="utf-8"))
-    ds = xr.open_dataset(fetch(f"data/{run['sst_file']}"))
+    run = json.loads(fetch("data/run.json", a.local_dir).read_text(encoding="utf-8"))
+    ds = xr.open_dataset(fetch(f"data/{run['sst_file']}", a.local_dir))
     months = pd.to_datetime(ds.time.values)
     nino = ds.nino34_9120.values.astype(float)
     lat, lon = ds.lat.values.astype(float), ds.lon.values.astype(float)
@@ -87,8 +92,8 @@ def draw(fields: dict, months: pd.DatetimeIndex, nino: np.ndarray, init: pd.Time
     norm = Normalize(-2, 32)
     plt.rcParams.update({"font.family": ["Arial", "Helvetica", "DejaVu Sans"], "font.size": 10, "text.color": t["ink"]})
     fig = plt.figure(figsize=(16, 7.6), dpi=130, facecolor=t["surface"])
-    fig.text(0.03, 0.935, "Global sea-surface temperature outlook (CAS-Canglong 0.25° V2.6)", fontsize=19, fontweight="bold", va="center")
-    fig.text(0.03, 0.885, f"ERA5 input through {init:%B %Y} · 32-member AI ensemble mean across the 16-month forecast "
+    fig.text(0.03, 0.935, "Global sea-surface temperature outlook (CAS-Canglong 0.25° Ensemble)", fontsize=19, fontweight="bold", va="center")
+    fig.text(0.03, 0.885, f"ERA5 input through {init:%B %Y} · 32-member ensemble mean across the 16-month forecast "
              f"({months[0]:%b %Y} – {months[-1]:%b %Y})", fontsize=11.5, color=t["ink2"], va="center")
 
     crs = ccrs.Robinson(central_longitude=200)
@@ -124,7 +129,7 @@ def draw(fields: dict, months: pd.DatetimeIndex, nino: np.ndarray, init: pd.Time
     cb.outline.set_visible(False)
     cb.ax.tick_params(labelsize=10, length=0, pad=4, colors=t["ink2"])
     fig.text(0.765, 0.937, "SST (°C)", fontsize=11, color=t["ink2"], va="center", ha="right")
-    fig.text(0.03, 0.035, "Research forecast, not an official product. CAS-Canglong 0.25° V2.6 32-member AI ensemble mean. "
+    fig.text(0.03, 0.035, "Research forecast, not an official product. CAS-Canglong 0.25° Ensemble (32-member mean). "
              "Isotherms every 5 °C; bold line: 28 °C; dashed box: Niño 3.4 (index vs ERA5 1991–2020).",
              fontsize=9.8, color=t["muted"], va="center")
     fig.text(0.97, 0.035, "canglong.earth", fontsize=10, color=t["muted"], va="center", ha="right")

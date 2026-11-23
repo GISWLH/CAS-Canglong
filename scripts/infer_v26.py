@@ -1,17 +1,17 @@
-"""CLI inference script for CAS-Canglong 0.25° V2.6 (16-month Dual-Branch Pareto + 32-member AI Ensemble).
+"""CLI inference script for CAS-Canglong 0.25° & 0.25° Ensemble (16-month deterministic and 32-member ensemble).
 
 Supports both the standalone `canglong.v2` module in this repository and `weatherai.models.canglong.load_official`.
 
 Examples
 --------
-Deterministic 16-month forecast from a normalized ERA5 tensor `(16, 8, 721, 1440)` or `(1, 8, 16, 721, 1440)`:
+Deterministic 16-month 0.25° forecast from a normalized ERA5 tensor `(16, 8, 721, 1440)` or `(1, 8, 16, 721, 1440)`:
 
     python scripts/infer_v26.py \\
         --checkpoint canglong025_v26_16m_cslim.tar.gz \\
         --input normalized_window.pt \\
         --out forecast_det_16m.npz
 
-32-member flow-dependent AI ensemble forecast (mean, spread, 5/25/75/95% quantiles):
+32-member 0.25° Ensemble forecast (mean, spread, 5/25/75/95% quantiles):
 
     python scripts/infer_v26.py \\
         --checkpoint canglong025_v26_16m_ens.tar.gz \\
@@ -66,13 +66,13 @@ def load_input_tensor(path: Path) -> torch.Tensor:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Run CAS-Canglong 0.25° V2.6 inference (deterministic or AI ensemble).")
-    ap.add_argument("--checkpoint", type=Path, required=True, help="Path to .tar or .tar.gz V2.6 checkpoint")
+    ap = argparse.ArgumentParser(description="Run CAS-Canglong 0.25° / 0.25° Ensemble inference.")
+    ap.add_argument("--checkpoint", type=Path, required=True, help="Path to .tar or .tar.gz checkpoint")
     ap.add_argument("--input", type=Path, default=None, help="Path to normalized ERA5 tensor (.pt or .npy)")
     ap.add_argument("--origin-month", type=int, default=None, help="Optional 1..12 calendar month of last input frame (auto-detected if omitted)")
     ap.add_argument("--leads", type=int, default=16, help="Forecast horizon in months (1..16, default 16)")
-    ap.add_argument("--members", type=int, default=1, help="Ensemble members (1 = deterministic; >=2 = AI ensemble, e.g. 32)")
-    ap.add_argument("--breed-cycles", type=int, default=1, help="Nonlinear AI breeding cycles for OBV ensemble (default 1)")
+    ap.add_argument("--members", type=int, default=1, help="Ensemble members (1 = deterministic; >=2 = 0.25° Ensemble, e.g. 32)")
+    ap.add_argument("--breed-cycles", type=int, default=1, help="Ensemble breeding cycles (default 1)")
     ap.add_argument("--seed", type=int, default=42, help="RNG seed for ensemble perturbations")
     ap.add_argument("--device", type=str, default="auto", help="cuda, cpu, or auto")
     ap.add_argument("--out", type=Path, default=None, help="Output .npz path")
